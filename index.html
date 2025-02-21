@@ -1,0 +1,1714 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button with Dropdown</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Контейнер для полосы с белой обводкой */
+        .fixed-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px; /* Увеличиваем высоту полосы */
+            background-color: black;
+            border-bottom: 5px solid white; /* Белая обводка полосы */
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Размещаем элементы с двух сторон */
+            padding: 0 20px; /* Отступы по бокам */
+            z-index: 1000;
+        }
+
+        /* Стили для картинки слева */
+        .image {
+            width: 80px; /* Увеличиваем ширину изображения */
+            height: 100%; /* Высота остается как высота полосы */
+            object-fit: cover; /* Обрезаем изображение, если оно выходит за пределы */
+        }
+
+        /* Стили для текста "FIVE NIGHT TD" */
+        .text {
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px; /* Уменьшаем размер текста */
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-left: -5px; /* Убираем отступ, чтобы текст был практически на границе картинки */
+            position: relative; /* Чтобы текст был поверх картинки */
+        }
+
+        /* Стили для кнопки */
+        .button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 36px; /* Увеличиваем шрифт */
+            font-family: 'Orbitron', sans-serif; /* Красивый футуристичный шрифт */
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            cursor: pointer;
+            position: relative;
+            z-index: 2; /* Чтобы кнопка была поверх картинки */
+            text-shadow: 0 0 5px white, 0 0 10px white, 0 0 20px white; /* Белая обводка текста */
+            transition: transform 0.3s ease, font-size 0.3s ease; /* Плавный переход */
+        }
+
+        .button:hover {
+            color: lightblue; /* Цвет при наведении */
+            text-shadow: 0 0 5px cyan, 0 0 10px cyan, 0 0 20px cyan; /* Эффект при наведении */
+            transform: translateY(5px) scale(1.2); /* Наклоняем вниз и увеличиваем размер */
+        }
+
+        /* Контейнер для выпадающего меню */
+        .dropdown {
+            position: relative;
+        }
+
+        /* Стили для скрытого меню */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 60px; /* Размещаем под полосой */
+            left: 0;
+            background-color: black;
+            border: 1px solid white;
+            min-width: 200px;
+            padding: 10px;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Плавное изменение прозрачности */
+        }
+
+        /* Стили для элементов в меню */
+        .dropdown-content p {
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            margin: 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        /* Эффект при наведении на элемент меню */
+        .dropdown-content p:hover {
+            color: lightblue;
+        }
+
+        /* Показать меню при наведении на кнопку */
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1; /* Меню становится видимым */
+            visibility: visible;
+        }
+
+        /* Задержка скрытия меню после того, как курсор уходит */
+        .dropdown-content {
+            visibility: hidden;
+            opacity: 0;
+            transition-delay: 0.5s; /* Задержка исчезновения на полсекунды */
+        }
+
+        /* Контент страницы */
+        .content {
+            margin-top: 100px; /* Отступ для контента, чтобы кнопка не закрывала текст */
+            height: 2000px;
+            background-color: black;
+        }
+
+    </style>
+
+    <!-- Подключение шрифта Orbitron для футуристичного стиля -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Полоса с картинкой, текстом и кнопкой -->
+    <div class="fixed-bar">
+        <!-- Картинка слева -->
+        <img src="https://i.ytimg.com/vi/bl8JTnyLDgg/hqdefault.jpg" alt="FNTD" class="image">
+        <!-- Текст "FIVE NIGHT TD" -->
+        <div class="text">FIVE NIGHT TD</div>
+        <!-- Кнопка "Units" с выпадающим меню -->
+        <div class="dropdown">
+            <button class="button">Units</button>
+            <div class="dropdown-content">
+                <p>EVOLUTIONS</p>
+                <p>APEX</p>
+                <p>ARG/DEV UNITS</p>
+                <p>FORGOTTEN</p>
+                <p>NIGHTMARES</p>
+                <p>SECRETS</p>
+                <p>MYTHIC AND +</p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        // Селектор для кнопки и выпадающего меню
+        const dropdownButton = document.querySelector('.button');
+        const dropdownContent = document.querySelector('.dropdown-content');
+        let isMenuOpen = false; // Флаг для отслеживания состояния меню
+
+        // Добавление события на клик по кнопке
+        dropdownButton.addEventListener('click', function() {
+            // Переключаем флаг состояния меню
+            isMenuOpen = !isMenuOpen;
+
+            if (isMenuOpen) {
+                dropdownContent.style.display = 'block';
+                dropdownContent.style.opacity = '1';
+                dropdownContent.style.visibility = 'visible';
+            } else {
+                dropdownContent.style.opacity = '0';
+                dropdownContent.style.visibility = 'hidden';
+                setTimeout(function() {
+                    dropdownContent.style.display = 'none';
+                }, 300); // Задержка скрытия меню
+            }
+        });
+
+        // Событие для наведения на кнопку
+        dropdownButton.addEventListener('mouseenter', function() {
+            if (!isMenuOpen) {
+                dropdownContent.style.display = 'block';
+                dropdownContent.style.opacity = '1';
+                dropdownContent.style.visibility = 'visible';
+            }
+        });
+
+        // Событие для выхода с кнопки
+        dropdownButton.addEventListener('mouseleave', function() {
+            if (!isMenuOpen) {
+                setTimeout(function() {
+                    dropdownContent.style.display = 'none';
+                    dropdownContent.style.opacity = '0';
+                    dropdownContent.style.visibility = 'hidden';
+                }, 500); // Задержка скрытия меню
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href=" https:="" fonts.cdnfonts.com="" css="" source-code-pro"="" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Source Code Pro';
+            background-color: black;
+            padding-top: 15vh;
+        }
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            justify-content: space-around;
+            flex-direction: row;
+        }
+        .side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .title {
+            color: white; 
+            margin-bottom: 20px;
+            font-size: 25px;
+            font-weight: bold;
+        }
+        .add-button {
+            width: 70px;
+            height: 70px;
+            background-color: #0000;
+            color: white;
+            font-size: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 20px;
+            border: 3px solid #888;
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .add-button:hover{
+            transform: scale(1.1);
+        }
+        .unit-list {
+            width: 325px;
+            max-height: auto;
+            margin-bottom: 10px;
+            color: white;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .unit-list .unit img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            will-change: transform;
+        }
+        .total-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background-color: #000;
+            margin: 5% auto;
+            padding: 20px;
+            border: 3px solid #333333;
+            width: 80%;
+            max-width: 800px;
+            max-height: fit-content;
+            overflow-y: auto;
+            color: white;
+            border-radius: 3px;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content-searching {
+            display: flex;
+            height: fit-content;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            width: fit-content;
+            animation: fadeIn 0.5s;
+        }
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .tabs {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding-top: 12px;
+        }
+        .tab {
+            padding: 10px;
+            cursor: pointer;
+            border: 3px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+        .tab:hover{
+            transform: scale(1.1);
+        }
+        .tab:active {
+            transform: rotate(-20deg);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            row-gap: 0.5px;
+            padding-left: 25px;
+            align-items: center;
+            width: fit-content;
+            height: fit-content;
+            max-height: 50vh;
+            align-self: flex-start;
+            overflow: auto;
+        }
+        .unit {
+            position: relative;
+            display: flex;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .unit img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .tab-content.active .unit{
+            overflow: hidden;
+        }
+        .tab-content.active .unit img{
+            transition: transform 0.3s ease;
+        }
+        .tab-content.active .unit img:hover{
+            transform: scale(1.2);
+        }
+        #secret .unit, #mythic .unit, #nightmare .unit, #evolutions .unit, #developer .unit, #item .unit{
+            border-radius: 5px;
+        }
+        #secret .unit {
+            border: 3px solid red;
+            color: red;
+        }
+        #mythic .unit {
+            border: 3px solid #ffd966;
+            color: #ffd966;
+        }
+        #nightmare .unit {
+            border: 3px solid #9900ff;
+            color: #9900ff;
+        }
+        #evolutions .unit{
+            border: 3px solid #7c7742;
+            color: #7c7742;
+        }
+        #apex .unit{
+            background-image: linear-gradient(black, black), linear-gradient(to bottom, #8024f5, #d70a4e);
+            border: 3px double transparent;
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+        }
+        #developer .unit{
+            border: 3px solid #01809e;
+            color: #01809e;
+        }
+        #forgotten .unit{
+            border: 3px solid #78b8f0;
+            color: #78b8f0;
+        }
+        #item .unit {
+            border: 3px solid #ffff00;
+            color: #ffff00;
+        }
+        .unit .unit-quantity {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 2px 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: white;
+            font-weight: bold;
+            z-index: 1;
+        }
+        .unit .unit-quantity::before {
+            content: "Qty: ";
+        }
+        .unit .vengeanceMarker, .unit .puppetsMarker, .unit .shadowMarker, .unit .boundedMarker, .unit .bossKillerMarker, .unit .witheredMarker, .unit .developerMarker, .unit .overclockedMarker, .unit .springlockMarker, .unit .investigatorMarker{
+            position: absolute;
+            bottom: 5px;
+            color: white;
+            font-weight: bold; 
+            font-size: 12px; 
+            padding: 2px 5px;
+            border-radius: 5px;
+            text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        .unit .vengeanceMarker{
+            left: 5px; 
+            background-color: red;
+            transform: translateX(10%);
+        }
+        .unit .puppetsMarker{
+            background-color: #211854;
+            transform: translateX(11%);
+        }
+        .unit .shadowMarker{
+            left: 5px;
+            background-color: #394057;
+            transform: translateX(40%);
+        }
+        .unit .boundedMarker{
+            left: 5px;
+            background-color: #24e838;
+            transform: translateX(30%);
+        }
+        .unit .bossKillerMarker{
+            left: 5px;
+            background-color: #4ff513;
+            transform: translateX(2%);
+        }
+        .unit .witheredMarker{
+            left: 5px;
+            background-color: #61151e;
+            transform: translateX(20%);
+        }
+        .unit .developerMarker{
+            left: 5px; 
+            background-color: #01809e;
+            transform: translateX(10%);
+        }
+        .unit .investigatorMarker{
+            left: 5px; 
+            background: linear-gradient(to right, yellow, red);
+            transform: translateX(-3%);
+        }
+        .unit .overclockedMarker{
+            left: 5px; 
+            background-color: #2e93e5;
+        }
+        .unit .springlockMarker{
+            left: 5px; 
+            background-color: #4d36bf;
+            transform: translateX(6%);
+        }
+        .unit .vengeanceMarker::before{
+            content: 'VENGEANCE';
+        }
+        .unit .puppetsMarker::before{
+            content: 'PUP.NIGHT.';
+        }
+        .unit .shadowMarker::before{
+            content: 'SHADOW';
+        }
+        .unit .boundedMarker::before{
+            content: 'BOUNDED';
+        }
+        .unit .bossKillerMarker::before{
+            content: 'BOSS KILLER';
+        }
+        .unit .witheredMarker::before{
+            content: 'WITHERED';
+        }
+        .unit .developerMarker::before{
+            content: 'DEVELOPER';
+        }
+        .unit .investigatorMarker::before{
+            content: 'INVESTIGATOR';
+        }
+        .unit .overclockedMarker::before{
+            content: 'OVERCLOCKED';
+        }
+        .unit .springlockMarker::before{
+            content: 'SPRINGLOCK';
+        }
+        input[type="radio"]{
+            margin-top: 20px;
+        }
+        .result {
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .search-bar {
+            margin-bottom: 15px;
+        }
+        .search-bar input {
+            width: 94%;
+            padding: 10px;
+            border: 3px solid #333333;
+            border-radius: 5px;
+            background-color: black;
+            color: white;
+            font-family: 'Source Code Pro';
+        }
+        .search-bar input:focus {
+            outline: none;
+        }
+        #quantityModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        #quantityModal .modal-content {
+            display: flex;
+            flex-direction: column;
+            background-color: #000;
+            margin: 10% auto;
+            padding: 20px;
+            border: 3px solid #333333;
+            width: 50%;
+            max-width: 400px;
+            height: fit-content;
+            color: white;
+            border-radius: 3px;
+            text-align: center;
+        }
+        #quantityModal .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        #quantityModal .close:hover,
+        #quantityModal .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #quantityModal input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 3px solid #333333;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+            font-family: 'Source Code Pro';
+        }
+        #quantityModal input:focus {
+            outline: none;
+        }
+        #quantityModal button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #quantityModal button:hover {
+            background-color: #218838;
+        }
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            visibility: visible;
+            top: 98px;
+            width: 95px;
+            background-color: black;
+            color: #fff;
+            font-size: 11px;
+            border-radius: 10px;
+            border: 2px solid #777777;
+            z-index: 1;
+            padding: 5px;
+            opacity: 1;
+            transition: opacity 0.3s;
+            left: -3.1px;
+        }
+        .tooltip::before{
+            content: 'DEMAND: ';
+        }
+        .unit:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        #enchantmentForm{
+            flex-wrap: wrap;
+            gap: 10px; 
+        }
+        input[type="checkbox"] {
+            display: none;
+        }
+        .custom-checkbox {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .custom-checkbox:after {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 12px;
+            height: 12px;
+            background-color: red;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        input[type="checkbox"]:checked + .custom-checkbox:after {
+            opacity: 1;
+        }
+        label {
+            color: white;
+            text-align: center;
+        }
+        @keyframes rainbowBorder {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 400% 400%;
+            }
+        }
+        .rainbow-border {
+            background-size: 400% 400%;
+            border-style: double;
+            border-width: 3px;
+            border-color: transparent;
+            border-radius: 5px;
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            animation: rainbowBorder 8s linear infinite;  /* Animación continua */
+        }
+        .unit-element {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+        .rainbow-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to top left, red, orange, yellow, green, blue, indigo, violet); 
+            background-size: 400% 400%; 
+            animation: rainbowGlow 6s linear infinite;
+            border-radius: 5px; 
+            pointer-events: none;
+            opacity: 0.1; 
+        }
+        @keyframes rainbowGlow {
+            0% {
+                background-position: -100% -100%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            100% {
+                background-position: -100% -100%;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            html {
+                height: 100%;
+            }
+            body {
+                transform: scale(0.5);
+                padding-top: 0vh;
+            }
+            .container{
+                justify-content: center;
+                flex-wrap: nowrap;
+                margin-top: -30px;
+            }
+            .modal{
+                left: -50%;
+                top: -100;
+                width: 200%;
+                height: 200%;
+            }
+            .modal-content{
+                max-height: 200vh;
+            }
+            .unit-list .unit img {
+                width: 60px;
+                height: 60px;
+                backface-visibility: hidden;
+            }
+            .unit-list {
+                width: 290px;
+                justify-content: center;
+            }
+            .unit img {
+                width: 60px;
+                height: 60px;
+                backface-visibility: hidden;
+            }
+            .tab-content.active{
+                height: fit-content;
+                max-height: 150vh;
+            }
+            #quantityModal{
+                left: -55px;
+                width: 150%;
+                height: 100%;
+            }
+            #quantityModal .modal-content {
+                margin: 0 0;
+                width: 100%;
+            }
+            .unit .unit-quantity {
+                top: 2px;
+                right: 2px;
+            }
+            .unit .unit-quantity::before {
+                content: "";
+            }
+            .unit .vengeanceMarker::before{
+                content: 'V';
+            }
+            .unit .puppetsMarker::before{
+                content: 'PN';
+            }
+            .unit .shadowMarker::before{
+                content: 'S';
+            }
+            .unit .boundedMarker::before{
+                content: 'B';
+            }
+            .unit .bossKillerMarker::before{
+                content: 'BK';
+            }
+            .unit .witheredMarker::before{
+                content: 'W';
+            }
+            .unit .developerMarker::before{
+                content: 'D';
+            }
+            .unit .investigatorMarker::before{
+                content: 'IV'
+            }
+            .unit .springlockMarker::before{
+                content: 'SP';
+            }
+            .unit .overclockedMarker::before{
+                content: 'O';
+            }
+            .unit .shadowMarker, .unit .puppetsMarker, .unit .vengeanceMarker, .unit .boundedMarker, .unit .bossKillerMarker, .unit .witheredMarker, .unit .developerMarker, .unit .overclockedMarker, .unit .springlockMarker, .unit .investigatorMarker{
+                transform: translateX(10%);
+                bottom: 2px;
+                left: 2px;
+            }
+            .tooltip {
+                top: 59px;
+                width: 55px;
+                visibility: visible;
+                opacity: 1;
+                font-size: 10px;
+                left: -4px;
+            }
+            .tooltip::before{
+                content: 'D: ';
+            }
+            .modal-content-searching{
+                height: 100%;
+            }
+            .search-bar input{
+                width: 94%;
+            }
+        }
+
+        @media screen and (min-width: 601px) and (max-width: 699px) {
+            html {
+                height: 100%;
+            }
+            body {
+                transform: scale(0.8);
+                padding-top: 0vh;
+            }
+            .container{
+                justify-content: center;
+                flex-wrap: nowrap;
+                margin-top: -30px;
+            }
+            .modal{
+                left: -50%;
+                top: -100;
+                width: 200%;
+                height: 200%;
+            }
+            .modal-content{
+                max-height: 200vh;
+            }
+            .unit-list .unit img {
+                width: 60px;
+                height: 60px;
+                backface-visibility: hidden;
+            }
+            .unit-list {
+                width: 290px;
+                justify-content: center;
+            }
+            .unit img {
+                width: 60px;
+                height: 60px;
+                backface-visibility: hidden;
+            }
+            .tab-content.active{
+                height: fit-content;
+                max-height: 78vh;
+            }
+            #quantityModal{
+                left: -55px;
+                width: 150%;
+                height: 100%;
+            }
+            #quantityModal .modal-content {
+                margin: 0 0;
+                width: 100%;
+            }
+            .unit .unit-quantity {
+                top: 2px;
+                right: 2px;
+            }
+            .unit .unit-quantity::before {
+                content: "";
+            }
+            .unit .vengeanceMarker::before{
+                content: 'V';
+            }
+            .unit .puppetsMarker::before{
+                content: 'PN';
+            }
+            .unit .shadowMarker::before{
+                content: 'S';
+            }
+            .unit .boundedMarker::before{
+                content: 'B';
+            }
+            .unit .bossKillerMarker::before{
+                content: 'BK';
+            }
+            .unit .witheredMarker::before{
+                content: 'W';
+            }
+            .unit .developerMarker::before{
+                content: 'D';
+            }
+            .unit .investigatorMarker::before{
+                content: 'IV';
+            }
+            .unit .springlockMarker::before{
+                content: 'SP';
+            }
+            .unit .overclockedMarker::before{
+                content: 'O';
+            }
+            .unit .shadowMarker, .unit .puppetsMarker, .unit .vengeanceMarker, .unit .boundedMarker, .unit .bossKillerMarker, .unit .witheredMarker, .unit .developerMarker, .unit .overclockedMarker, .unit .springlockMarker, .unit .investigatorMarker{
+                transform: translateX(10%);
+                bottom: 2px;
+                left: 2px;
+            }
+            .tooltip {
+                top: 69px;
+                width: 55px;
+                visibility: visible;
+                opacity: 1;
+                font-size: 10px;
+                left: -3px;
+            }
+            .tooltip::before{
+                content: 'D: ';
+            }
+        }
+    </style>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit Selection Menu</title>
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: black;
+      color: white;
+      text-align: center;
+    }
+    .extraMenu, .enchantmentMenu {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: auto;
+      background: rgba(0, 0, 0, 0.95);
+      border: 3px solid white;
+      padding: 30px;
+      z-index: 1000;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      flex-direction: column;
+      align-items: center;
+    }
+    .menu-categories {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+    .menu-category {
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border: 4px solid;
+    }
+    .menu-category.apex { border-color: #8024f5; }
+    .menu-category.evolutions { border-color: #FFD700; }
+    .unit-selection {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    .unit {
+      width: 100px;
+      height: 100px;
+      background: black;
+      border: 3px solid white;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      position: relative;
+      overflow: hidden;
+    }
+    .unit img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .enchantment-label {
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 3px 6px;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 5px;
+      color: white;
+      background: rgba(0, 0, 0, 0.7);
+    }
+    .unit-frame {
+      border: 2px solid white;
+      border-radius: 10px;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    .total-value {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    .add-button-container {
+      margin: 20px;
+      padding: 10px;
+      border: 1px solid white;
+      display: inline-block;
+      vertical-align: top;
+      width: 300px;
+    }
+    .add-button {
+      width: 50px;
+      height: 50px;
+      margin: 10px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      border: 3px solid rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Левый контейнер -->
+    <div class="add-button-container" id="leftContainer">
+      <div class="title">Your Value</div>
+      <div class="add-button" onclick="openMenu('unitMenu', 'left')">+</div>
+      <div class="total-value" id="leftTotalValue">Total Value: 0</div>
+      <div class="unit-list" id="leftUnitList"></div>
+    </div>
+    <!-- Правый контейнер -->
+    <div class="add-button-container" id="rightContainer">
+      <div class="title">Their Value</div>
+      <div class="add-button" onclick="openMenu('unitMenu', 'right')">+</div>
+      <div class="total-value" id="rightTotalValue">Total Value: 0</div>
+      <div class="unit-list" id="rightUnitList"></div>
+    </div>
+  </div>
+
+  <!-- Меню с юнитами -->
+  <div class="extraMenu" id="unitMenu">
+    <span class="close-btn" onclick="closeMenu('unitMenu')" style="cursor: pointer; font-size: 30px; color: #ff0000;">×</span>
+    <div class="menu-categories">
+      <div class="menu-category apex" onclick="showUnits('Apex')">Apex</div>
+      <div class="menu-category evolutions" onclick="showUnits('Evolutions')">Evolutions</div>
+      <div class="menu-category forgotten" onclick="showUnits('Forgotten')">Forgotten</div>
+      <div class="menu-category nightmares" onclick="showUnits('Nightmares')">Nightmares</div>
+      <div class="menu-category secrets" onclick="showUnits('Secrets')">Secrets</div>
+      <div class="menu-category mythics-plus" onclick="showUnits('Mythics+')">Mythics+</div>
+    </div>
+    <div class="menu-categories" style="margin-top: 10px;">
+      <div class="menu-category items" onclick="showUnits('Items')">Items</div>
+      <div class="menu-category developer" onclick="showUnits('Developer')">Developer</div>
+    </div>
+    <div class="unit-selection" id="unitSelection"></div>
+  </div>
+
+  <!-- Меню с зачарованиями -->
+  <div class="enchantmentMenu" id="enchantmentMenu">
+    <span class="close-btn" onclick="closeMenu('enchantmentMenu')" style="cursor: pointer; font-size: 30px; color: #ff0000;">×</span>
+    <input type="number" id="unitCount" min="1" value="1" style="width: 50px; margin-bottom: 10px;">
+    <div class="enchant-buttons">
+      <div class="springlock-btn" onclick="selectEnchantment('Springlock')" style="cursor: pointer; margin: 5px;">Springlock</div>
+      <div class="vengeance-btn" onclick="selectEnchantment('Vengeance')" style="cursor: pointer; margin: 5px;">Vengeance</div>
+    </div>
+    <button onclick="addUnit()" style="cursor: pointer; padding: 5px 10px; margin-top: 10px;">Добавить</button>
+  </div>
+
+  <script>
+    // Глобальные переменные
+    let selectedUnit = null;
+    let selectedEnchantment = '';
+    let totalValueLeft = 0;
+    let totalValueRight = 0;
+    let currentContainer = 'left'; // По умолчанию левый контейнер
+
+    // Пример объекта юнитов
+    const units = {
+      "Glided Knight": {
+        rarity: "Apex",
+        price: 900000,
+        img: "https://drive.google.com/thumbnail?id=1is6E2wqtXafrT8vhhBudQmXna2KhpJoa",
+        enchantments: { Springlock: 60000, Vengeance: 30000 }
+      },
+      "Master Puppeteer": {
+        rarity: "Evolutions",
+        price: 900,
+        img: "https://drive.google.com/thumbnail?id=1y1pRS5id2hmWzg2p0QleCJMBgPdireR0",
+        enchantments: { Springlock: 3100, Vengeance: 1750 }
+      },
+"Stonetrap": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1xRSOx5wgivRVcASptBCEczteo3bA4-PT=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"The King": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1Xknu42rF7zdlyz46yTbf7uTXBYRgXGXP=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Icetrap": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/14pHGr8cmgi14wKEXBj5SgvHpw0DbrdRJ=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Overlord Scott": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1U5EyWoAz9OynJosm_DCXV26Eh8VYe_dY=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Stardrop": {
+    "rarity": "Nightmares",
+    "price": 5000,
+    "img": "https://lh3.googleusercontent.com/d/1OTCTrP1pw9JNtoMGhLCXBkD357xVTiBP=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Shadow of Afton": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1fwuSl9menLea15CX7Nsj76mftnf4W61u=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Blighted Foxy": {
+    "rarity": "Nightmares",
+    "price": 10000,
+    "img": "https://lh3.googleusercontent.com/d/1TAR0RdHz02JoozO9S01pYZ7YhRzGAvBL=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 10000
+    }
+},
+"Forge Withered Bonnie": {
+    "rarity": "Nightmares",
+    "price": 6000,
+    "img": "https://lh3.googleusercontent.com/d/1unk8VxAOxPoHoZCBidu__bv7q0AiH9un=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Soulmate Puppet": {
+    "rarity": "Nightmares",
+    "price": 10000,
+    "img": "https://lh3.googleusercontent.com/d/1lpoh1IMHxNfcwxvutlyINUcPkKC5BjJJ=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Glamrock Bonnie": {
+    "rarity": "Nightmares",
+    "price": 15000,
+    "img": "https://lh3.googleusercontent.com/d/1ETYbs0N6AbItBug36vNOzOG_r2CZz44x=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Shadow Bonnie": {
+    "rarity": "Nightmares",
+    "price": 20000,
+    "img": "https://lh3.googleusercontent.com/d/1Fp_bdAytwnQD4YXDKdHX9_FrMajc_pF8=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Springtrap": {
+    "rarity": "Nightmares",
+    "price": 15000,
+    "img": "https://lh3.googleusercontent.com/d/1W2HW0VmQHrkEwt9W7RAqc37DcvUCrxP3=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Nightmarrione": {
+    "rarity": "Nightmares",
+    "price": 5000,
+    "img": "https://lh3.googleusercontent.com/d/1T-BmTUOTE8TY2YpWsx506CTj7uxpH5EB=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Ennard": {
+    "rarity": "Nightmares",
+    "price": 3500,
+    "img": "https://lh3.googleusercontent.com/d/1XcirxKo3KUUjb1coYUMDfnqSRMFFiqeW=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Lefty": {
+    "rarity": "Nightmares",
+    "price": 2000,
+    "img": "https://lh3.googleusercontent.com/d/1wwEPm9be7a2xLDSsWoGAV0u-NIF_wmuT=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Burntrap": {
+    "rarity": "Nightmares",
+    "price": 10000,
+    "img": "https://lh3.googleusercontent.com/d/1C_Z5G40ElEVo9VOZHyGMOHVoMbd1MV2e=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Blighted Endo Freddy": {
+    "rarity": "Nightmares",
+    "price": 30000,
+    "img": "https://lh3.googleusercontent.com/d/1oKim337w5yV1K9kfBY-mF-ISXsyHGQT8=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Phantom Mangle": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1ab_vENjTJ7yX5kostoUwHpCUm-wc0JA0=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Nightmare Mangle": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/10xuokb0mLn_QzdC_O6lrYRv2DQ-PF9fc=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Endo 05": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1hAhabVuastCYuGSwxn07Z6h5m1CLPR2S=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Scraptrap": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1J_vTLsKyQfwbgnm-7qGKIhj29lZd0wLx=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Leviathan Mangle": {
+    "rarity": "Nightmares",
+    "price": 50000,
+    "img": "https://lh3.googleusercontent.com/d/1FCfcdYZkiFpaN5Anl9qLadgriWf8iWY8=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Valkyrie Chica": {
+    "rarity": "Nightmares",
+    "price": 150000,
+    "img": "https://lh3.googleusercontent.com/d/1YoYy8rK_6W_czxU7jK_AgXfr9eJAZsOT=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Outlaw Freddy": {
+    "rarity": "Nightmares",
+    "price": 30000,
+    "img": "https://lh3.googleusercontent.com/d/1WEmYA_CdpFM3at7hHXEv6xp14nzcl2TI=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Dreadbear": {
+    "rarity": "Nightmares",
+    "price": 500,
+    "img": "https://lh3.googleusercontent.com/d/1TYbGPDqHJQk34bfPjn0bCZJifrSwwr50=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Widow Baby": {
+    "rarity": "Nightmares",
+    "price": 3000,
+    "img": "https://lh3.googleusercontent.com/d/1gH79zyjE41M7I8s-uGQm6D3CBBn91Bvh=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Jolly Shadow Bonnie": {
+    "rarity": "Nightmares",
+    "price": 500,
+    "img": "https://lh3.googleusercontent.com/d/1_Hv3xUd0EuOn6PF92ZqF873TejE34N-A=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Area Endoxus": {
+    "rarity": "Nightmares",
+    "price": 500,
+    "img": "https://lh3.googleusercontent.com/d/1i7CvZn5u8XUKqWdAzncdxJXMhKeFw931=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Goliath Endo Freddy": {
+    "rarity": "Nightmares",
+    "price": 12500,
+    "img": "https://lh3.googleusercontent.com/d/1qncocTnyqaKkTog6kw45LwBr0-feCueX=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Juggernaut Bonnie": {
+    "rarity": "Nightmares",
+    "price": 9000,
+    "img": "https://lh3.googleusercontent.com/d/1N00BG1tF0HtEONvLhO8pzY4HabsIeRk4=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Scarecrow Foxy": {
+    "rarity": "Nightmares",
+    "price": 3000,
+    "img": "https://lh3.googleusercontent.com/d/1sApVEINlP4CgfmX712Ip4wK6U0hFaCd_=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Bouncer": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1BtGCxd7ABTWD4CymfWoGhYvGF9fHg8qN=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Exotic Butters": {
+    "rarity": "Nightmares",
+    "price": 200000,
+    "img": "https://lh3.googleusercontent.com/d/13iT4aY0KLZYDAj9SBV3Qs7Ji9Hwz2Mdq=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"8-bit OMC": {
+    "rarity": "Nightmares",
+    "price": 500000,
+    "img": "https://lh3.googleusercontent.com/d/1-I_opJjcGIaaXVzYOk6MFHhLAZ3n0OF9=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Marionette Puppeteer": {
+    "rarity": "Nightmares",
+    "price": 500,
+    "img": "https://lh3.googleusercontent.com/d/1Rn7LAP1Ap1NdWokktIR8dLqjcyF9qEu3=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 2500,
+        "Springlock": 5000
+    }
+},
+"Bounded Shadow": {
+    "rarity": "Nightmares",
+    "price": 500,
+    "img": "https://lh3.googleusercontent.com/d/1rx8OHyOVJMoo7Y1H1RO3ozDBUsQHASDZ=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 2500,
+        "Springlock": 5000
+    }
+},
+"Glitched Puppeteer": {
+    "rarity": "Nightmares",
+    "price": 10000,
+    "img": "https://lh3.googleusercontent.com/d/1bVUl1z72qap_Frg03ayOlqAeOqppk6dW=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Galleon Foxy": {
+    "rarity": "Nightmares",
+    "price": 5000,
+    "img": "https://lh3.googleusercontent.com/d/1mWucC6VzJHqto14RWWzKm-mK56A7rL8L=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Blighted Endo Bonnie": {
+    "rarity": "Nightmares",
+    "price": 1500,
+    "img": "https://lh3.googleusercontent.com/d/1fW9w-EjQTBdhnSkWHB_rf_tljQ1EFMn-=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Moon Drop": {
+    "rarity": "Nightmares",
+    "price": 40000,
+    "img": "https://lh3.googleusercontent.com/d/1_XIJMkN06ucFkBIB9Gh0we626rnaSMov=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 10000
+    }
+},
+"Vannie": {
+    "rarity": "Nightmares",
+    "price": 0,
+    "img": "https://lh3.googleusercontent.com/d/1Fwo2NmAuotkIFWUWN8cVa3TmVgQicGmw=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Diver Endo": {
+    "rarity": "Nightmares",
+    "price": 3000,
+    "img": "https://lh3.googleusercontent.com/d/1KR9e5GcaZnyYHpcsEm3WY2zRuLLT44i2=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+}
+
+
+
+
+   
+      // Добавь другие юниты сюда
+    };
+
+    // Функция для форматирования стоимости
+    function formatNumber(num) {
+      if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + ' M';
+      } else if (num >= 1000) {
+        return (num / 1000).toFixed(1) + ' k';
+      } else {
+        return num.toString();
+      }
+    }
+
+    // Открытие меню выбора юнитов
+    function openMenu(menuId, container) {
+      currentContainer = container; // Запоминаем, какой контейнер выбран
+      document.getElementById(menuId).style.display = 'flex';
+    }
+
+    // Закрытие меню
+    function closeMenu(menuId) {
+      document.getElementById(menuId).style.display = 'none';
+    }
+
+    // Показ юнитов для выбранной редкости
+    function showUnits(rarity) {
+      const unitSelection = document.getElementById('unitSelection');
+      unitSelection.innerHTML = ''; // Очистка перед заполнением
+      for (const key in units) {
+        if (units[key].rarity === rarity) {
+          unitSelection.innerHTML += `
+            <div class="unit" onclick="selectUnit('${key}')">
+              <img src="${units[key].img}" alt="${key}" />
+            </div>`;
+        }
+      }
+    }
+
+    // Выбор юнита
+    function selectUnit(unitName) {
+      selectedUnit = unitName;
+      closeMenu('unitMenu');
+      openMenu('enchantmentMenu', currentContainer);
+    }
+
+    // Выбираем зачарование
+    function selectEnchantment(enchantment) {
+      selectedEnchantment = enchantment;
+    }
+
+    // Добавление юнита в выбранный контейнер
+    function addUnit() {
+      if (!selectedUnit || !selectedEnchantment) {
+        alert('Ошибка: Юнит или зачарование не выбраны');
+        return;
+      }
+
+      const count = parseInt(document.getElementById('unitCount').value);
+      if (isNaN(count) || count <= 0) {
+        alert('Ошибка: Количество юнитов некорректно');
+        return;
+      }
+
+      const unitData = units[selectedUnit];
+      const unitCost = unitData.price + (unitData.enchantments[selectedEnchantment] || 0);
+      let unitList;
+      let totalValue;
+
+      // Сохранение информации для каждого юнита
+      const addedUnits = [];
+
+      if (currentContainer === 'left') {
+        totalValueLeft += unitCost * count;
+        unitList = document.getElementById('leftUnitList');
+        totalValue = totalValueLeft;
+      } else if (currentContainer === 'right') {
+        totalValueRight += unitCost * count;
+        unitList = document.getElementById('rightUnitList');
+        totalValue = totalValueRight;
+      }
+
+      // Добавление юнитов
+      for (let i = 0; i < count; i++) {
+        const newUnit = document.createElement('div');
+        newUnit.className = "unit";
+        newUnit.innerHTML = `
+          <img src="${unitData.img}" alt="${selectedUnit}" />
+          <div class="enchantment-label">${selectedEnchantment}</div>`;
+        newUnit.onclick = function() {
+          removeUnit(newUnit, unitCost); // Передаем стоимость одного юнита
+        };
+        unitList.appendChild(newUnit);
+
+        // Добавляем в список добавленных юнитов
+        addedUnits.push(newUnit);
+      }
+
+      // Обновляем стоимость
+      document.getElementById(currentContainer + 'TotalValue').innerText = `Total Value: ${formatNumber(totalValue)}`;
+
+      // Закрываем меню
+      closeMenu('enchantmentMenu');
+    }
+
+    // Удаление юнита
+    function removeUnit(unitElement, unitCost) {
+      const unitList = document.getElementById(currentContainer + 'UnitList');
+      unitList.removeChild(unitElement);
+
+      // Вычитание стоимости для одного юнита
+      if (currentContainer === 'left') {
+        totalValueLeft -= unitCost;
+        document.getElementById('leftTotalValue').innerText = `Total Value: ${formatNumber(totalValueLeft)}`;
+      } else if (currentContainer === 'right') {
+        totalValueRight -= unitCost;
+        document.getElementById('rightTotalValue').innerText = `Total Value: ${formatNumber(totalValueRight)}`;
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт</title>
+    <style>
+        .site-info {
+            position: fixed;
+            bottom: 10px;
+            right: 50%;
+            transform: translateX(50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="site-info">
+        Владелец сайта: @NAVARRLO<br>
+        Модераторы: @Viivan15, @JhonDaveHariss<br>
+        По вопросам если вы увидели ошибку в сайте или если вы увидели неправильную цену пишите владельцу сайта.
+    </div>
+</body>
+</html>
+
+
+
+
+</div>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+
+
+<label style="display: flex; justify-content: center; align-items: center; font-size: 20px; margin-top: 30px; font-family: 'Orbitron', sans-serif; margin-top: 30px;">
+    <input type="checkbox" name="enchantmentV" id="disableCheckbox" checked="">
+    <span class="custom-checkbox"></span>
+    Vengeance Adds Value
+</label>
+
+<label style="display: flex; justify-content: center; align-items: center; font-size: 20px; margin-top: 30px; font-family: 'Orbitron', sans-serif;">
+    <input type="checkbox" name="enchantmentS" id="disableCheckbox2" checked="">
+    <span class="custom-checkbox"></span>
+    Springlock Adds Value
+</label>
+
+
+<!-- MODAL PRINCIPAL CON LAS CATEGORÍAS DE UNIDADES E ITEMS -->
+<div id="myModal" class="modal">
+   v  <diclass="modal-content">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search"><span class="close" onclick="closeModal()">X</span>
+      
+
+)j h
+
+
