@@ -1,0 +1,1559 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit Selection Menu</title>
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: black;
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+    .add-button-container {
+      margin: 10px;
+      padding: 15px;
+      border: 1px solid white;
+      display: inline-block;
+      vertical-align: top;
+      width: 250px;
+    }
+    .add-button {
+      width: 60px;
+      height: 60px;
+      margin: 10px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      border: 3px solid rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .total-value {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .extraMenu, .enchantmentMenu {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 600px;
+      background: rgba(0, 0, 0, 0.95);
+      border: 3px solid white;
+      padding: 30px;
+      z-index: 1000;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      flex-direction: column;
+      align-items: center;
+    }
+    .menu-categories {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    .menu-category {
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      border: 4px solid;
+    }
+    .unit-selection {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    .unit {
+      width: 80px;
+      height: 80px;
+      background: black;
+      border: 3px solid white;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      position: relative;
+      overflow: hidden;
+    }
+    .unit img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .enchantment-label {
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 3px 6px;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 5px;
+      color: white;
+      background: rgba(0, 0, 0, 0.7);
+    }
+    .close-btn {
+      cursor: pointer;
+      font-size: 30px;
+      color: #ff0000;
+    }
+    @media (max-width: 600px) {
+      .menu-category {
+        font-size: 12px;
+        padding: 8px 10px;
+      }
+      .unit {
+        width: 60px;
+        height: 60px;
+      }
+      .add-button {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+      .total-value {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="add-button-container" id="leftContainer">
+      <div class="title">Your Value</div>
+      <div class="add-button" onclick="openMenu('unitMenu', 'left')">+</div>
+      <div class="total-value" id="leftTotalValue">Total Value: 0</div>
+      <div class="unit-list" id="leftUnitList"></div>
+    </div>
+    <div class="add-button-container" id="rightContainer">
+      <div class="title">Their Value</div>
+      <div class="add-button" onclick="openMenu('unitMenu', 'right')">+</div>
+      <div class="total-value" id="rightTotalValue">Total Value: 0</div>
+      <div class="unit-list" id="rightUnitList"></div>
+    </div>
+  </div>
+
+    <!-- Меню с юнитами -->
+  <div class="extraMenu" id="unitMenu">
+    <span class="close-btn" onclick="closeMenu('unitMenu')" style="cursor: pointer; font-size: 30px; color: #ff0000;">×</span>
+    <div class="menu-categories">
+      <div class="menu-category apex" onclick="showUnits('Apex')">Apex</div>
+      <div class="menu-category evolutions" onclick="showUnits('Evolutions')">Evolutions</div>
+      <div class="menu-category forgotten" onclick="showUnits('Forgotten')">Forgotten</div>
+      <div class="menu-category nightmares" onclick="showUnits('Nightmares')">Nightmares</div>
+      <div class="menu-category secrets" onclick="showUnits('Secrets')">Secrets</div>
+      <div class="menu-category mythics-plus" onclick="showUnits('Mythics+')">Mythics+</div>
+    </div>
+    <div class="menu-categories" style="margin-top: 10px;">
+      <div class="menu-category items" onclick="showUnits('Items')">Items</div>
+      <div class="menu-category developer" onclick="showUnits('Developer')">Developer</div>
+    </div>
+    <div class="unit-selection" id="unitSelection"></div>
+  </div>
+
+  <!-- Меню с зачарованиями -->
+  <div class="enchantmentMenu" id="enchantmentMenu">
+    <span class="close-btn" onclick="closeMenu('enchantmentMenu')" style="cursor: pointer; font-size: 30px; color: #ff0000;">×</span>
+    <input type="number" id="unitCount" min="1" value="1" style="width: 50px; margin-bottom: 10px;">
+    <div class="enchant-buttons">
+      <div class="springlock-btn" onclick="selectEnchantment('Springlock')" style="cursor: pointer; margin: 5px;">Springlock</div>
+      <div class="vengeance-btn" onclick="selectEnchantment('Vengeance')" style="cursor: pointer; margin: 5px;">Vengeance</div>
+    </div>
+    <button onclick="addUnit()" style="cursor: pointer; padding: 5px 10px; margin-top: 10px;">Добавить</button>
+  </div>
+
+  <script>
+    // Глобальные переменные
+    let selectedUnit = null;
+    let selectedEnchantment = '';
+    let totalValueLeft = 0;
+    let totalValueRight = 0;
+    let currentContainer = 'left'; // По умолчанию левый контейнер
+
+    // Пример объекта юнитов
+    const units = {
+      "Glided Knight": {
+        rarity: "Apex",
+        price: 900000,
+        img: "https://drive.google.com/thumbnail?id=1is6E2wqtXafrT8vhhBudQmXna2KhpJoa",
+        enchantments: { Springlock: 60000, Vengeance: 30000 }
+      },
+      "Master Puppeteer": {
+        rarity: "Evolutions",
+        price: 900,
+        img: "https://drive.google.com/thumbnail?id=1y1pRS5id2hmWzg2p0QleCJMBgPdireR0",
+        enchantments: { Springlock: 3100, Vengeance: 1750 }
+      },
+"Stonetrap": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1xRSOx5wgivRVcASptBCEczteo3bA4-PT=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"The King": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1Xknu42rF7zdlyz46yTbf7uTXBYRgXGXP=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Icetrap": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/14pHGr8cmgi14wKEXBj5SgvHpw0DbrdRJ=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Overlord Scott": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1U5EyWoAz9OynJosm_DCXV26Eh8VYe_dY=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Stardrop": {
+    "rarity": "Nightmares",
+    "price": 5000,
+    "img": "https://lh3.googleusercontent.com/d/1OTCTrP1pw9JNtoMGhLCXBkD357xVTiBP=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Shadow of Afton": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1fwuSl9menLea15CX7Nsj76mftnf4W61u=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+  "Shiny Master Puppeteer": {
+    "rarity": "Evolutions",
+    "price": 5000,
+    "img": "https://drive.google.com/thumbnail?id=1nAmHQ8fVC_X5ZeWfvl3ecdlhQH_se-1X",
+    "enchantments": {
+      "Vengeance": 2000,
+      "Springlock": 4500
+    }
+  },
+  "Limitless Shadow": {
+    "rarity": "Evolutions",
+    "price": 1000,
+    "img": "https://drive.google.com/thumbnail?id=1VJvk1ZS4JwagkNjRpgU7r735v4_n6z10",
+    "enchantments": {
+      "Vengeance": 2000,
+      "Springlock": 3500
+    }
+  },
+  "Shiny Limitless Shadow": {
+    "rarity": "Evolutions",
+    "price": 5250,
+    "img": "https://drive.google.com/thumbnail?id=1eS9MHsQis2RxPE_nXyNBdKx4dLp2FmFK",
+    "enchantments": {
+      "Vengeance": 4000,
+      "Springlock": 6000
+    }
+  },
+  "Agonized Springtrap": {
+    "rarity": "Evolutions",
+    "price": 4500,
+    "img": "https://drive.google.com/thumbnail?id=1EE5f1FqPdW_K8-i5iOanmtWTV-C1QJx-",
+    "enchantments": {
+      "Vengeance": 4000,
+      "Springlock": 6000
+    }
+  },
+  "Shiny Agonized Springtrap": {
+    "rarity": "Evolutions",
+    "price": 50000,
+    "img": "https://drive.google.com/thumbnail?id=1b2JYCVRC7HfeXc9Uc-UL4mfKWellHbbJ",
+    "enchantments": {
+      "Vengeance": 40000,
+      "Springlock": 7000
+    }
+  },
+  "Fractured Bonnie": {
+    "rarity": "Evolutions",
+    "price": 1750,
+    "img": "https://drive.google.com/thumbnail?id=1B6voh_gsi0e9BT6iVWGVeZyQ1hWkACpb",
+    "enchantments": {
+      "Vengeance": 2750,
+      "Springlock": 4000
+    }
+  },
+  "Shiny Fractured Bonnie": {
+    "rarity": "Evolutions",
+    "price": 70000,
+    "img": "https://drive.google.com/thumbnail?id=1kzprqpwBu79VosDmSPJa_M0vJfPvVBip",
+    "enchantments": {
+      "Vengeance": 50000,
+      "Springlock": 8000
+    }
+  },
+  "RWQFSFASXC": {
+    "rarity": "Evolutions",
+    "price": 4500,
+    "img": "https://drive.google.com/thumbnail?id=1vzFQ3PALgYwnV3knfzwcEbAl11eFUj8d",
+    "enchantments": {
+      "Vengeance": 2750,
+      "Springlock": 3500
+    }
+  },
+  "Shiny RWQFSFASXC": {
+    "rarity": "Evolutions",
+    "price": 50000,
+    "img": "https://drive.google.com/thumbnail?id=1gHaezOHKc2ig0PP5bDNvukuJYTZ5Iqcm",
+    "enchantments": {
+      "Vengeance": 50000,
+      "Springlock": 8000
+    }
+  },
+  "Valkyrie Prime": {
+    "rarity": "Evolutions",
+    "price": 80000,
+    "img": "https://drive.google.com/thumbnail?id=11V3OFlLQ5UsfiTQDrLzh3G6sTQ2wp7kN",
+    "enchantments": {
+      "Vengeance": 15000,
+      "Springlock": 22500
+    }
+  },
+  "Shiny Valkyrie Prime": {
+    "rarity": "Evolutions",
+    "price": 200000,
+    "img": "https://drive.google.com/thumbnail?id=1Bck2HE5_FXVY1NcYc_abg2DJDe8Gumat",
+    "enchantments": {
+      "Vengeance": 25000,
+      "Springlock": 35000
+    }
+  },
+"Blighted Foxy": {
+    "rarity": "Nightmares",
+    "price": 10000,
+    "img": "https://lh3.googleusercontent.com/d/1TAR0RdHz02JoozO9S01pYZ7YhRzGAvBL=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 10000
+    }
+},
+"Forge Withered Bonnie": {
+    "rarity": "Nightmares",
+    "price": 6000,
+    "img": "https://lh3.googleusercontent.com/d/1unk8VxAOxPoHoZCBidu__bv7q0AiH9un=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Soulmate Puppet": {
+    "rarity": "Nightmares",
+    "price": 10000,
+    "img": "https://lh3.googleusercontent.com/d/1lpoh1IMHxNfcwxvutlyINUcPkKC5BjJJ=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+  "Nautic Crusher Mangle": {
+    "rarity": "Evolutions",
+    "price": 40000,
+    "img": "https://drive.google.com/thumbnail?id=1nByjKe1uD-i4ZOY_eGY_y9cBArVyDBOQ",
+    "enchantments": {
+      "Vengeance": 8750,
+      "Springlock": 12500
+    }
+  },
+  "Shiny Nautic Crusher Mangle": {
+    "rarity": "Evolutions",
+    "price": 200000,
+    "img": "https://drive.google.com/thumbnail?id=1tN84uuM_P7aecxbYmJCHnP4jVnumsjOj",
+    "enchantments": {
+      "Vengeance": 15000,
+      "Springlock": 22500
+    }
+  },
+  "Animdude": {
+    "rarity": "Evolutions",
+    "price": 4000,
+    "img": "https://drive.google.com/thumbnail?id=1VTUYMXzhBMWGy90CvIBam_42e9sLy4oo",
+    "enchantments": {
+      "Vengeance": 6250,
+      "Springlock": 9000
+    }
+  },
+  "Shiny Animdude": {
+    "rarity": "Evolutions",
+    "price": 40000,
+    "img": "https://drive.google.com/thumbnail?id=1OI22HNKbmfAXEJYhGq82zfwo0kszEQc9",
+    "enchantments": {
+      "Vengeance": 15000,
+      "Springlock": 22500
+    }
+  },
+  "Bomber Boy": {
+    "rarity": "Evolutions",
+    "price": 2000,
+    "img": "https://drive.google.com/thumbnail?id=1tHmI_mWo1wtbR4EeNCbq8_goe5iBqn21",
+    "enchantments": {
+      "Vengeance": 2750,
+      "Springlock": 3500
+    }
+  },
+  "Shiny Bomber Boy": {
+    "rarity": "Evolutions",
+    "price": 100000,
+    "img": "https://drive.google.com/thumbnail?id=1h-lmWGav7QAFh0xnuec1Ack-FtuIiv8T",
+    "enchantments": {
+      "Vengeance": 40000,
+      "Springlock": 7500
+    }
+  },
+  "Fortified Endo 02": {
+    "rarity": "Evolutions",
+    "price": 9000,
+    "img": "https://drive.google.com/thumbnail?id=1haJyliDaRu-aL1o7Tbyc7cKLBpoYxv8G",
+    "enchantments": {
+      "Vengeance": 12500,
+      "Springlock": 17000
+    }
+  },
+  "Shiny Fortified Endo 02": {
+    "rarity": "Evolutions",
+    "price": 170000,
+    "img": "https://drive.google.com/thumbnail?id=1o6jg5hNGSticETGzhNY3RH_O1dr_Qzwo",
+    "enchantments": {
+      "Vengeance": 17500,
+      "Springlock": 25000
+    }
+  },
+  "Overclocked Puppeteer": {
+    "rarity": "Evolutions",
+    "price": 10000,
+    "img": "https://drive.google.com/thumbnail?id=169A_nXr8YwXQBQWcOiORCglnkWmuatpb",
+    "enchantments": {
+      "Vengeance": 7500,
+      "Springlock": 12000
+    }
+  },
+  "Shiny Overclocked Puppeteer": {
+    "rarity": "Evolutions",
+    "price": 37500,
+    "img": "https://drive.google.com/thumbnail?id=1qVKcWc5kVI7HfuYFhF95ozAK1PE3jrwf",
+    "enchantments": {
+      "Vengeance": 12500,
+      "Springlock": 17000
+    }
+  },
+  "Deadeye Freddy": {
+    "rarity": "Evolutions",
+    "price": 20000,
+    "img": "https://drive.google.com/thumbnail?id=1QehlFGhRfhLNkMxcT0BM1ZEekPym45d6",
+    "enchantments": {
+      "Vengeance": 8750,
+      "Springlock": 11000
+    }
+  },
+  "Shiny Deadeye Freddy": {
+    "rarity": "Evolutions",
+    "price": 262500,
+    "img": "https://drive.google.com/thumbnail?id=1XGTY-fnR81oXEC0FKI3V5qXqNEPTNhFH",
+    "enchantments": {
+      "Vengeance": 20000,
+      "Springlock": 30000
+    }
+  },
+  "President Freddy": {
+    "rarity": "Evolutions",
+    "price": 2250,
+    "img": "https://drive.google.com/thumbnail?id=1vMgVRe_vOjqoWouEYrld1Zwm4D6hPjzE",
+    "enchantments": {
+      "Vengeance": 2000,
+      "Springlock": 4000
+    }
+  },
+  "Shiny President Freddy": {
+    "rarity": "Evolutions",
+    "price": 10000,
+    "img": "https://drive.google.com/thumbnail?id=1nu5huWtOeMAkRwmAJrQn_z2rCS14y78Y",
+    "enchantments": {
+      "Vengeance": 4000,
+      "Springlock": 7500
+    }
+  },
+
+  "Overseer Foxy": {
+    "rarity": "Evolutions",
+    "price": 10500,
+    "img": "https://drive.google.com/thumbnail?id=1GYD_R1QN6g8AwpbrNJtlTYrtDsr9es5m",
+    "enchantments": {
+      "Vengeance": 7500,
+      "Springlock": 12500
+    }
+  },
+  "Shiny Overseer Foxy": {
+    "rarity": "Evolutions",
+    "price": 100000,
+    "img": "https://drive.google.com/thumbnail?id=1o9p4NL8kPfDBiF8-PuN8pTjueg0l_Vx-",
+    "enchantments": {
+      "Vengeance": 15000,
+      "Springlock": 22500
+    }
+  },
+
+
+
+"Glamrock Bonnie": {
+    "rarity": "Nightmares",
+    "price": 15000,
+    "img": "https://lh3.googleusercontent.com/d/1ETYbs0N6AbItBug36vNOzOG_r2CZz44x=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Shadow Bonnie": {
+    "rarity": "Nightmares",
+    "price": 20000,
+    "img": "https://lh3.googleusercontent.com/d/1Fp_bdAytwnQD4YXDKdHX9_FrMajc_pF8=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Springtrap": {
+    "rarity": "Nightmares",
+    "price": 15000,
+    "img": "https://lh3.googleusercontent.com/d/1W2HW0VmQHrkEwt9W7RAqc37DcvUCrxP3=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Nightmarrione": {
+    "rarity": "Nightmares",
+    "price": 5000,
+    "img": "https://lh3.googleusercontent.com/d/1T-BmTUOTE8TY2YpWsx506CTj7uxpH5EB=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Ennard": {
+    "rarity": "Nightmares",
+    "price": 3500,
+    "img": "https://lh3.googleusercontent.com/d/1XcirxKo3KUUjb1coYUMDfnqSRMFFiqeW=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Lefty": {
+    "rarity": "Nightmares",
+    "price": 2000,
+    "img": "https://lh3.googleusercontent.com/d/1wwEPm9be7a2xLDSsWoGAV0u-NIF_wmuT=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Burntrap": {
+    "rarity": "Nightmares",
+    "price": 10000,
+    "img": "https://lh3.googleusercontent.com/d/1C_Z5G40ElEVo9VOZHyGMOHVoMbd1MV2e=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Blighted Endo Freddy": {
+    "rarity": "Nightmares",
+    "price": 30000,
+    "img": "https://lh3.googleusercontent.com/d/1oKim337w5yV1K9kfBY-mF-ISXsyHGQT8=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Phantom Mangle": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1ab_vENjTJ7yX5kostoUwHpCUm-wc0JA0=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Nightmare Mangle": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/10xuokb0mLn_QzdC_O6lrYRv2DQ-PF9fc=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Endo 05": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1hAhabVuastCYuGSwxn07Z6h5m1CLPR2S=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Scraptrap": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1J_vTLsKyQfwbgnm-7qGKIhj29lZd0wLx=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Leviathan Mangle": {
+    "rarity": "Nightmares",
+    "price": 50000,
+    "img": "https://lh3.googleusercontent.com/d/1FCfcdYZkiFpaN5Anl9qLadgriWf8iWY8=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Valkyrie Chica": {
+    "rarity": "Nightmares",
+    "price": 150000,
+    "img": "https://lh3.googleusercontent.com/d/1YoYy8rK_6W_czxU7jK_AgXfr9eJAZsOT=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Outlaw Freddy": {
+    "rarity": "Nightmares",
+    "price": 30000,
+    "img": "https://lh3.googleusercontent.com/d/1WEmYA_CdpFM3at7hHXEv6xp14nzcl2TI=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Dreadbear": {
+    "rarity": "Nightmares",
+    "price": 500,
+    "img": "https://lh3.googleusercontent.com/d/1TYbGPDqHJQk34bfPjn0bCZJifrSwwr50=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Widow Baby": {
+    "rarity": "Nightmares",
+    "price": 3000,
+    "img": "https://lh3.googleusercontent.com/d/1gH79zyjE41M7I8s-uGQm6D3CBBn91Bvh=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Jolly Shadow Bonnie": {
+    "rarity": "Nightmares",
+    "price": 500,
+    "img": "https://lh3.googleusercontent.com/d/1_Hv3xUd0EuOn6PF92ZqF873TejE34N-A=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Area Endoxus": {
+    "rarity": "Nightmares",
+    "price": 500,
+    "img": "https://lh3.googleusercontent.com/d/1i7CvZn5u8XUKqWdAzncdxJXMhKeFw931=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Goliath Endo Freddy": {
+    "rarity": "Nightmares",
+    "price": 12500,
+    "img": "https://lh3.googleusercontent.com/d/1qncocTnyqaKkTog6kw45LwBr0-feCueX=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Juggernaut Bonnie": {
+    "rarity": "Nightmares",
+    "price": 9000,
+    "img": "https://lh3.googleusercontent.com/d/1N00BG1tF0HtEONvLhO8pzY4HabsIeRk4=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Scarecrow Foxy": {
+    "rarity": "Nightmares",
+    "price": 3000,
+    "img": "https://lh3.googleusercontent.com/d/1sApVEINlP4CgfmX712Ip4wK6U0hFaCd_=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Bouncer": {
+    "rarity": "Nightmares",
+    "price": 4000,
+    "img": "https://lh3.googleusercontent.com/d/1BtGCxd7ABTWD4CymfWoGhYvGF9fHg8qN=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Exotic Butters": {
+    "rarity": "Nightmares",
+    "price": 200000,
+    "img": "https://lh3.googleusercontent.com/d/13iT4aY0KLZYDAj9SBV3Qs7Ji9Hwz2Mdq=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"8-bit OMC": {
+    "rarity": "Nightmares",
+    "price": 500000,
+    "img": "https://lh3.googleusercontent.com/d/1-I_opJjcGIaaXVzYOk6MFHhLAZ3n0OF9=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Marionette Puppeteer": {
+    "rarity": "Nightmares",
+    "price": 500,
+    "img": "https://lh3.googleusercontent.com/d/1Rn7LAP1Ap1NdWokktIR8dLqjcyF9qEu3=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 2500,
+        "Springlock": 5000
+    }
+},
+"Bounded Shadow": {
+    "rarity": "Nightmares",
+    "price": 500,
+    "img": "https://lh3.googleusercontent.com/d/1rx8OHyOVJMoo7Y1H1RO3ozDBUsQHASDZ=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 2500,
+        "Springlock": 5000
+    }
+},
+"Glitched Puppeteer": {
+    "rarity": "Nightmares",
+    "price": 10000,
+    "img": "https://lh3.googleusercontent.com/d/1bVUl1z72qap_Frg03ayOlqAeOqppk6dW=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Galleon Foxy": {
+    "rarity": "Nightmares",
+    "price": 5000,
+    "img": "https://lh3.googleusercontent.com/d/1mWucC6VzJHqto14RWWzKm-mK56A7rL8L=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+"Blighted Endo Bonnie": {
+    "rarity": "Nightmares",
+    "price": 1500,
+    "img": "https://lh3.googleusercontent.com/d/1fW9w-EjQTBdhnSkWHB_rf_tljQ1EFMn-=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 5000,
+        "Springlock": 7500
+    }
+},
+"Moon Drop": {
+    "rarity": "Nightmares",
+    "price": 40000,
+    "img": "https://lh3.googleusercontent.com/d/1_XIJMkN06ucFkBIB9Gh0we626rnaSMov=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 10000
+    }
+},
+"Vannie": {
+    "rarity": "Nightmares",
+    "price": 0,
+    "img": "https://lh3.googleusercontent.com/d/1Fwo2NmAuotkIFWUWN8cVa3TmVgQicGmw=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 10000,
+        "Springlock": 15000
+    }
+},
+"Diver Endo": {
+    "rarity": "Nightmares",
+    "price": 3000,
+    "img": "https://lh3.googleusercontent.com/d/1KR9e5GcaZnyYHpcsEm3WY2zRuLLT44i2=s220?authuser=0",
+    "enchantments": {
+        "Vengeance": 7500,
+        "Springlock": 10000
+    }
+},
+
+
+
+
+  "Premium pass": {
+    "rarity": "Items",
+    "price": 70000,
+    "img": "https://lh3.googleusercontent.com/d/1Xk7o9nCBjzqjzmnBmiQa33GSs4vKoj6V=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "Greek pass": {
+    "rarity": "Items",
+    "price": 37500,
+    "img": "https://lh3.googleusercontent.com/d/1Wll35VpNhMSAgJHw9qEt9jClfVsj6PuL=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "VIP": {
+    "rarity": "Items",
+    "price": 55000,
+    "img": "https://lh3.googleusercontent.com/d/1bKa3LDMsSr0fZgRTela0aJ3sIXB0zxcr=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "Shiny hunter": {
+    "rarity": "Items",
+    "price": 70000,
+    "img": "https://lh3.googleusercontent.com/d/1n0tCY45C8hcPR6UEArjuuHMypaa7vJ_a=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "Quick open": {
+    "rarity": "Items",
+    "price": 20000,
+    "img": "https://lh3.googleusercontent.com/d/1kPaOg5PrD-anb0CmQn6c77QMjcH8nME7=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "Agony": {
+    "rarity": "Items",
+    "price": 200,
+    "img": "https://lh3.googleusercontent.com/d/10vXey-StC_x3QB_p4nI54wyKiK2k-lFs=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "Golden lock": {
+    "rarity": "Items",
+    "price": 175,
+    "img": "https://lh3.googleusercontent.com/d/1vHdB-NQzhWBJFHDBrcH8M5NYqfhn40l0=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "Eternal glasses": {
+    "rarity": "Items",
+    "price": 125,
+    "img": "https://lh3.googleusercontent.com/d/1Tmy0Yjt7hSlFaOFkt1-90Q84-YFTtXXw=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "Stat chip": {
+    "rarity": "Items",
+    "price": 50,
+    "img": "https://lh3.googleusercontent.com/d/13csYEbLkq4wELrPl7HFVmLGxppw4-X9s=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "Pandora present": {
+    "rarity": "Items",
+    "price": 175,
+    "img": "https://lh3.googleusercontent.com/d/13rKift1MXcWuQSlCzHG7x3k0zTa4WeDJ=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "Olympus present": {
+    "rarity": "Items",
+    "price": 250,
+    "img": "https://lh3.googleusercontent.com/d/1aDje7XIeJhhoHOZxryo65QTgJZ1V8NL7=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "Season present 7": {
+    "rarity": "Items",
+    "price": 175,
+    "img": "https://lh3.googleusercontent.com/d/1yJal0oUXmUR_VojnHIDeS8XmWEL0IvBJ=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+  "Corrupted": {
+    "rarity": "Items",
+    "price": 3500,
+    "img": "https://lh3.googleusercontent.com/d/1wRtugEaFdxrAXfoHeYaDpPU-mb_L5Xqs=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 0,
+      "Springlock": 0
+    }
+  },
+
+  "Old Man Consequences": {
+    "rarity": "Apex",
+    "price": 200000,
+    "img": "https://lh3.googleusercontent.com/d/1vUUwCkr-Ks3JSaRNH_VSvO9okkRBjP0h=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Astral Bonnie": {
+    "rarity": "Apex",
+    "price": 120000,
+    "img": "https://lh3.googleusercontent.com/d/1cY4dc8K4lqst_KhBxXQxFuPyDglw0k0I=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Gravelord Foxy": {
+    "rarity": "Apex",
+    "price": 100000,
+    "img": "https://lh3.googleusercontent.com/d/10u056X-3djTHWKi4bBaSpVJD7mNCWdLH=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Kronos Endo Freddy": {
+    "rarity": "Apex",
+    "price": 110000,
+    "img": "https://lh3.googleusercontent.com/d/15ubxRlGUyNUvN9dRFs0GmYN6AOoM4NXX=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Black Ice Freddy": {
+    "rarity": "Apex",
+    "price": 17500,
+    "img": "https://lh3.googleusercontent.com/d/1lsiW-GJMuJ5vPRQUWThog1HzSzJ4p4kx=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Frostbite Freddy": {
+    "rarity": "Apex",
+    "price": 120000,
+    "img": "https://lh3.googleusercontent.com/d/10X-EnuDpApQxF6Sia3xNzjtmVGTtaz8i=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Old Man Krampus": {
+    "rarity": "Apex",
+    "price": 300000,
+    "img": "https://lh3.googleusercontent.com/d/1rRt744OPHxOYXmFJ5RvTLHRrbdX32Coo=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Dark Knight Puppet": {
+    "rarity": "Apex",
+    "price": 500000,
+    "img": "https://lh3.googleusercontent.com/d/1Y2f6KghoSSGZ5qmOHrQfqakrSr8m4Nce=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+
+  "Apollo Sun": {
+    "rarity": "Apex",
+    "price": 55000,
+    "img": "https://lh3.googleusercontent.com/d/1apiTxAum704jT-GjUfFLPEwFOBI_TlP7=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Apollo Moon": {
+    "rarity": "Apex",
+    "price": 200000,
+    "img": "https://lh3.googleusercontent.com/d/1BAnZnXJ6xb9ghRB7cfW-pi7oQVKDYy_n=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Titan Crusher Freddy": {
+    "rarity": "Apex",
+    "price": 120000,
+    "img": "https://lh3.googleusercontent.com/d/12kYqohLq6Yotbb5t5JKHKhvH3BzqtgdO=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+
+  "Shiny Shadow Bonnie": {
+    "rarity": "Nightmares",
+    "price": 800000,
+    "img": "https://lh3.googleusercontent.com/d/1R2cCu7zcMKyYIooRu-EGjHxVa_tIImp5=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Shiny Spring Trap": {
+    "rarity": "Nightmares",
+    "price": 300000,
+    "img": "https://lh3.googleusercontent.com/d/1hrya1PkImqDt-DoTgJoDscOAJ67sVs4q=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 10000
+    }
+  },
+  "Shiny Nightmarrione": {
+    "rarity": "Nightmares",
+    "price": 125000,
+    "img": "https://lh3.googleusercontent.com/d/19B98G78P_t3UHiYVSoUQ0H0-_Q4OEH0v=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Shiny Ennard": {
+    "rarity": "Nightmares",
+    "price": 75000,
+    "img": "https://lh3.googleusercontent.com/d/1ug5PG5_7EpoV5nhgUq8LEGszDTdNRy8t=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Shiny Lefty": {
+    "rarity": "Nightmares",
+    "price": 25000,
+    "img": "https://lh3.googleusercontent.com/d/1yDzkr1hT8uVp0J5u3poE-aU-Df2-A8ca=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Shiny Burntrap": {
+    "rarity": "Nightmares",
+    "price": 95000,
+    "img": "https://lh3.googleusercontent.com/d/1ZdE8TgLmB_HfWr4b2GaqfFRyPKNPvWmw=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Shiny Blighted Endo Freddy": {
+    "rarity": "Nightmares",
+    "price": 2000000,
+    "img": "https://lh3.googleusercontent.com/d/1ldZ4RB0-YEC5DbgaX-2jBD6evycmbmpU=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Shiny Phantom Mangle": {
+    "rarity": "Nightmares",
+    "price": 700000,
+    "img": "https://lh3.googleusercontent.com/d/1S7qGMjgSCU5KOF3cE_xauuA1lJkEHvL6=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+  "Shiny Nightmare Mangle": {
+    "rarity": "Nightmares",
+    "price": 500000,
+    "img": "https://lh3.googleusercontent.com/d/1mHvcXY7Na9A5yC-lkV1ms_l6V_Xqloxv=s220?authuser=0",
+    "enchantments": {
+      "Vengeance": 10000,
+      "Springlock": 15000
+    }
+  },
+"Shiny Bouncer": {
+  "rarity": "Nightmares",
+  "price": 50000,
+  "img": "https://lh3.googleusercontent.com/d/11W5XujMl_3xmxJ55ESL6sloWeFwVpdsM=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Diver Endo": {
+  "rarity": "Nightmares",
+  "price": 75000,
+  "img": "https://lh3.googleusercontent.com/d/1BMXKPY-52qqVt907u4k54LfduQrN30RE=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Moondrop": {
+  "rarity": "Nightmares",
+  "price": 500000,
+  "img": "https://lh3.googleusercontent.com/d/1KbVwLCH6lsHAmDWtYkXlnmt4-2WY-H1b=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Vanny": {
+  "rarity": "Nightmares",
+  "price": 700000,
+  "img": "https://lh3.googleusercontent.com/d/1GrAiOWc99jzOp6R0J8ZlNuVK6pfijN5E=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Stone Trap": {
+  "rarity": "Nightmares",
+  "price": 40000,
+  "img": "https://lh3.googleusercontent.com/d/1s4SWO7bpdByKUEeoHtj0N55IW4JG5Jsk=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Kingtrap": {
+  "rarity": "Nightmares",
+  "price": 35000,
+  "img": "https://lh3.googleusercontent.com/d/1Y4NghMh9DPUeD_nkQ0oA5_vALGRWyHH_=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Icetrap": {
+  "rarity": "Nightmares",
+  "price": 35000,
+  "img": "https://lh3.googleusercontent.com/d/1xwKqcWxf_VtCEBLrkTYFebck2ahamnMZ=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Overlord Scott": {
+  "rarity": "Nightmares",
+  "price": 35000,
+  "img": "https://lh3.googleusercontent.com/d/1-s6iVwNe3NJhWDbcYYuXxu8I9dDw0qRY=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Stardrop": {
+  "rarity": "Nightmares",
+  "price": 175000,
+  "img": "https://lh3.googleusercontent.com/d/1PlLG1FFHTX_WrG9kQRK1omJaj_bFKt86=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Shadow of Afton": {
+  "rarity": "Nightmares",
+  "price": 30000,
+  "img": "https://lh3.googleusercontent.com/d/1CsjQBbWBylZTBTc4_dhADG_rHZAOCl2n=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Blighted Foxy": {
+  "rarity": "Nightmares",
+  "price": 250000,
+  "img": "https://lh3.googleusercontent.com/d/1F_pvLVdZtnqTV97XseelWMMGSSgRuGeF=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Glamrock Bonnie": {
+  "rarity": "Nightmares",
+  "price": 300000,
+  "img": "https://lh3.googleusercontent.com/d/1h_LXzpjBQMMKZGLB1pj0H9_9Wa8780MD=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Soulmate Puppet": {
+  "rarity": "Nightmares",
+  "price": 200000,
+  "img": "https://lh3.googleusercontent.com/d/1YdlneDuj1ALHi9ubdXxcs2xr_KENwUsF=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Its Me": {
+  "rarity": "Nightmares",
+  "price": 1500,
+  "img": "https://lh3.googleusercontent.com/d/1uEjub2SLI2fkwK__-tuPFBGvuGpei_eA=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 5500,
+    "Springlock": 7000
+  }
+},
+"Shiny Winter Soldier Bonnie": {
+  "rarity": "Nightmares",
+  "price": 7000,
+  "img": "https://lh3.googleusercontent.com/d/14leIRqhSP9-1kw2Ggf13v7rOhuV0CDQs=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 7500,
+    "Springlock": 10000
+  }
+},
+"Shiny Forge Bonnie": {
+  "rarity": "Nightmares",
+  "price": 60000,
+  "img": "https://lh3.googleusercontent.com/d/1tK0WnrMP-Ii-5tBgQ1Yx0oszSiQGjhJy=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Wet Floor Bot": {
+  "rarity": "Secrets",
+  "price": 350000,
+  "img": "https://lh3.googleusercontent.com/d/1BjGieHolo5Q9ak4R306PZYmOLjR8giZ3=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Popstar Chica": {
+  "rarity": "Secrets",
+  "price": 200000,
+  "img": "https://lh3.googleusercontent.com/d/1eLmFN9R17BM73GLMaYTzmA5aEZF1cti4=s220?authuser=0",
+  "enchantments": {
+    "Vengeance": 10000,
+    "Springlock": 15000
+  }
+},
+"Shiny Frost Queen Ballora": {
+  "rarity": "Secrets",
+  "price": 225000,
+  "img": "https://lh3.googleusercontent.com/d/1pYOL7o4AjLYO9a_xUt1Dm_amyF1wp6en=s220?authuser=0",
+  "enchantments": {
+    "Springlock": 15000
+  }
+},
+"Shiny Kingtrap": {
+  "rarity": "Secrets",
+  "price": 450000,
+  "img": "https://lh3.googleusercontent.com/d/17aCUQ8jLNwtQcgWlhnpgKIR72x8AmVtn=s220?authuser=0",
+  "enchantments": {
+    "Springlock": 15000
+  }
+},
+"Shiny Helpy": {
+  "rarity": "Secrets",
+  "price": 450000,
+  "img": "https://lh3.googleusercontent.com/d/14YaN3LRoiyEDgPanVCgE360EZcJYCJqx=s220?authuser=0",
+  "enchantments": {
+    "Springlock": 15000
+  }
+},
+"Shiny DJ Music Man": {
+  "rarity": "Secrets",
+  "price": 450000,
+  "img": "https://lh3.googleusercontent.com/d/1G6k-Kfl6sJY5Z-6AsRVjntYoyqGnxZHt=s220?authuser=0",
+  "enchantments": {}
+},
+"Shiny Freadbear": {
+  "rarity": "Secrets",
+  "price": 75000,
+  "img": "https://lh3.googleusercontent.com/d/1J0EjZgE7IAgQZl9p00pn-20y6UOJdOvV=s220?authuser=0",
+  "enchantments": {
+    "Springlock": 15000
+  }
+},
+"Shiny Spring Bonnie": {
+  "rarity": "Secrets",
+  "price": 200000,
+  "img": "https://lh3.googleusercontent.com/d/1lx_2mM6aq6UTv4D9Wb31VgN2xv4p7iy0=s220?authuser=0",
+  "enchantments": {
+    "Springlock": 15000
+  }
+},
+"Shiny Music Man": {
+  "rarity": "Secrets",
+  "price": 200000,
+  "img": "https://lh3.googleusercontent.com/d/18K8wPDvY6f3J_qbIverVi6TQ-BwseUkX=s220?authuser=0",
+  "enchantments": {
+    "Springlock": 15000
+  }
+},
+"Shiny Eclipse Ballora": {
+  "rarity": "Secrets",
+  "price": 1500000,
+  "img": "https://lh3.googleusercontent.com/d/1bvZ598tyQGfkTZFJk2P7OCea4DaIlGVv=s220?authuser=0",
+  "enchantments": {
+    "Springlock": 15000
+  }
+},
+"Shiny Jar of Pickles": {
+  "rarity": "Secrets",
+  "price": 1500000,
+  "img": "https://lh3.googleusercontent.com/d/1LILvWSSYZzN2rBbP4LVwDUl5586VcsQY=s220?authuser=0",
+  "enchantments": {
+    "Springlock": 15000
+  }
+},
+
+
+
+
+};
+
+
+
+
+    // Функция для форматирования стоимости
+    function formatNumber(num) {
+      if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + ' M';
+      } else if (num >= 1000) {
+        return (num / 1000).toFixed(1) + ' k';
+      } else {
+        return num.toString();
+      }
+    }
+
+    // Открытие меню выбора юнитов
+    function openMenu(menuId, container) {
+      currentContainer = container; // Запоминаем, какой контейнер выбран
+      document.getElementById(menuId).style.display = 'flex';
+    }
+
+    // Закрытие меню
+    function closeMenu(menuId) {
+      document.getElementById(menuId).style.display = 'none';
+    }
+
+    // Показ юнитов для выбранной редкости
+    function showUnits(rarity) {
+      const unitSelection = document.getElementById('unitSelection');
+      unitSelection.innerHTML = ''; // Очистка перед заполнением
+      for (const key in units) {
+        if (units[key].rarity === rarity) {
+          unitSelection.innerHTML += `
+            <div class="unit" onclick="selectUnit('${key}')">
+              <img src="${units[key].img}" alt="${key}" />
+            </div>`;
+        }
+      }
+    }
+
+    // Выбор юнита
+    function selectUnit(unitName) {
+      selectedUnit = unitName;
+      closeMenu('unitMenu');
+      openMenu('enchantmentMenu', currentContainer);
+    }
+
+    // Выбираем зачарование
+    function selectEnchantment(enchantment) {
+      selectedEnchantment = enchantment;
+    }
+
+    // Добавление юнита в выбранный контейнер
+    function addUnit() {
+      if (!selectedUnit || !selectedEnchantment) {
+        alert('Ошибка: Юнит или зачарование не выбраны');
+        return;
+      }
+
+      const count = parseInt(document.getElementById('unitCount').value);
+      if (isNaN(count) || count <= 0) {
+        alert('Ошибка: Количество юнитов некорректно');
+        return;
+      }
+
+      const unitData = units[selectedUnit];
+      const unitCost = unitData.price + (unitData.enchantments[selectedEnchantment] || 0);
+      let unitList;
+      let totalValue;
+
+      // Сохранение информации для каждого юнита
+      const addedUnits = [];
+
+      if (currentContainer === 'left') {
+        totalValueLeft += unitCost * count;
+        unitList = document.getElementById('leftUnitList');
+        totalValue = totalValueLeft;
+      } else if (currentContainer === 'right') {
+        totalValueRight += unitCost * count;
+        unitList = document.getElementById('rightUnitList');
+        totalValue = totalValueRight;
+      }
+
+      // Добавление юнитов
+      for (let i = 0; i < count; i++) {
+        const newUnit = document.createElement('div');
+        newUnit.className = "unit";
+        newUnit.innerHTML = `
+          <img src="${unitData.img}" alt="${selectedUnit}" />
+          <div class="enchantment-label">${selectedEnchantment}</div>`;
+        newUnit.onclick = function() {
+          removeUnit(newUnit, unitCost); // Передаем стоимость одного юнита
+        };
+        unitList.appendChild(newUnit);
+
+        // Добавляем в список добавленных юнитов
+        addedUnits.push(newUnit);
+      }
+
+      // Обновляем стоимость
+      document.getElementById(currentContainer + 'TotalValue').innerText = `Total Value: ${formatNumber(totalValue)}`;
+
+      // Закрываем меню
+      closeMenu('enchantmentMenu');
+    }
+
+    // Удаление юнита
+    function removeUnit(unitElement, unitCost) {
+      const unitList = document.getElementById(currentContainer + 'UnitList');
+      unitList.removeChild(unitElement);
+
+      // Вычитание стоимости для одного юнита
+      if (currentContainer === 'left') {
+        totalValueLeft -= unitCost;
+        document.getElementById('leftTotalValue').innerText = `Total Value: ${formatNumber(totalValueLeft)}`;
+      } else if (currentContainer === 'right') {
+        totalValueRight -= unitCost;
+        document.getElementById('rightTotalValue').innerText = `Total Value: ${formatNumber(totalValueRight)}`;
+      }
+    }
+  </script>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт</title>
+    <style>
+        .site-info {
+            position: absolute; /* Используем absolute, чтобы блок был в потоке документа */
+            left: 110%;
+            transform: translateX(-110%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            text-align: center;
+            width: 110%;
+            box-sizing: border-box;
+            z-index: 1; /* Снижено значение z-index для того, чтобы блок не перекрывал другие окна */
+        }
+
+        /* Медиазапрос для мобильных устройств */
+        @media (max-width: 600px) {
+            .site-info {
+                top: 80%; /* Смещаем блок вниз */
+                transform: translateX(-50%) translateY(-11%); /* Дополнительное выравнивание */
+                font-size: 12px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="site-info">
+        Владелец сайта: @NAVARRLO<br>
+        Модераторы: @Viivan15, @JhonDaveHariss<br>
+        По вопросам если вы увидели ошибку в сайте или если вы увидели неправильную цену пишите владельцу сайта.
+    </div>
+</body>
+</html>
+
+
+
+</div>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+
+
+
