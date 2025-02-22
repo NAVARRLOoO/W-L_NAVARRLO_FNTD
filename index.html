@@ -15,22 +15,23 @@
     }
     .container {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
+      align-items: flex-start;
       margin-top: 90px;
-      flex-wrap: wrap;
+      padding: 0 20px;
     }
     .add-button-container {
-      margin: 10px;
-      padding: px;
-      border: 1px solid white;
-      display: inline-block;
-      vertical-align: top;
-      width: 250px;
+      text-align: center;
+      width: 45%;
+    }
+    .title {
+      font-size: 18px;
+      margin-bottom: 10px;
     }
     .add-button {
       width: 60px;
       height: 60px;
-      margin: 10px auto;
+      margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -44,13 +45,20 @@
       transition: 0.3s;
       cursor: pointer;
     }
-    .title {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
     .total-value {
       font-size: 16px;
       margin-top: 10px;
+    }
+    .unit-list {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-start;
+    }
+    .unit-item {
+      width: calc(50% - 5px); /* Два элемента в строке с отступом */
+      text-align: center;
     }
     .extraMenu, .enchantmentMenu {
       display: none;
@@ -206,6 +214,9 @@
       .add-button-container {
         width: 90%;
       }
+      .unit-item {
+        width: 100%; /* На мобильных устройствах один элемент в строке */
+      }
     }
 
     /* Обводка для кнопки APEX */
@@ -287,6 +298,45 @@
       <div class="unit-list" id="rightUnitList"></div>
     </div>
   </div>
+
+
+
+  <div class="enchantmentMenu">
+    <div class="close-btn">×</div>
+    <div class="modal-content">
+      <h2>Enchantment Menu</h2>
+      <form>
+        <label>
+          <input type="number" placeholder="Enter value">
+        </label>
+        <button type="submit">Apply</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript для открытия/закрытия модальных окон
+    const addButtons = document.querySelectorAll('.add-button');
+    const extraMenu = document.querySelector('.extraMenu');
+    const enchantmentMenu = document.querySelector('.enchantmentMenu');
+    const closeButtons = document.querySelectorAll('.close-btn');
+
+    addButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        extraMenu.style.display = 'flex';
+      });
+    });
+
+    closeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        extraMenu.style.display = 'none';
+        enchantmentMenu.style.display = 'none';
+      });
+    });
+  </script>
+</body>
+</html>
+
   <!-- Меню с юнитами -->
   <div class="extraMenu" id="unitMenu">
     <span class="close-btn" onclick="closeMenu('unitMenu')" style="cursor: pointer; font-size: 30px; color: #ff0000;">×</span>
@@ -1113,21 +1163,21 @@
     "img": "https://lh3.googleusercontent.com/d/1vUUwCkr-Ks3JSaRNH_VSvO9okkRBjP0h=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
-      "Springlock": 20000
+      "Springlock": 15000
     }
   },
   "Astral Bonnie": {
     "rarity": "Apex",
-    "price": 125000,
+    "price": 120000,
     "img": "https://lh3.googleusercontent.com/d/1cY4dc8K4lqst_KhBxXQxFuPyDglw0k0I=s220?authuser=0",
     "enchantments": {
-      "Vengeance": 15000,
-      "Springlock": 30000
+      "Vengeance": 10000,
+      "Springlock": 15000
     }
   },
   "Gravelord Foxy": {
     "rarity": "Apex",
-    "price": 120000,
+    "price": 100000,
     "img": "https://lh3.googleusercontent.com/d/10u056X-3djTHWKi4bBaSpVJD7mNCWdLH=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
@@ -1136,7 +1186,7 @@
   },
   "Kronos Endo Freddy": {
     "rarity": "Apex",
-    "price": 130000,
+    "price": 110000,
     "img": "https://lh3.googleusercontent.com/d/15ubxRlGUyNUvN9dRFs0GmYN6AOoM4NXX=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
@@ -1145,7 +1195,7 @@
   },
   "Black Ice Freddy": {
     "rarity": "Apex",
-    "price": 13000,
+    "price": 17500,
     "img": "https://lh3.googleusercontent.com/d/1lsiW-GJMuJ5vPRQUWThog1HzSzJ4p4kx=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
@@ -1158,34 +1208,34 @@
     "img": "https://lh3.googleusercontent.com/d/10X-EnuDpApQxF6Sia3xNzjtmVGTtaz8i=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
-      "Springlock": 35000
+      "Springlock": 15000
     }
   },
   "Old Man Krampus": {
     "rarity": "Apex",
-    "price": 370000,
+    "price": 300000,
     "img": "https://lh3.googleusercontent.com/d/1rRt744OPHxOYXmFJ5RvTLHRrbdX32Coo=s220?authuser=0",
     "enchantments": {
-      "Vengeance": 30000,
-      "Springlock": 110000
+      "Vengeance": 10000,
+      "Springlock": 15000
     }
   },
   "Dark Knight Puppet": {
     "rarity": "Apex",
-    "price": 425000,
+    "price": 500000,
     "img": "https://lh3.googleusercontent.com/d/1Y2f6KghoSSGZ5qmOHrQfqakrSr8m4Nce=s220?authuser=0",
     "enchantments": {
-      "Vengeance": 50000,
-      "Springlock": 100000
+      "Vengeance": 10000,
+      "Springlock": 15000
     }
   },
 
   "Apollo Sun": {
     "rarity": "Apex",
-    "price": 45000,
+    "price": 55000,
     "img": "https://lh3.googleusercontent.com/d/1apiTxAum704jT-GjUfFLPEwFOBI_TlP7=s220?authuser=0",
     "enchantments": {
-      "Vengeance": 5000,
+      "Vengeance": 10000,
       "Springlock": 15000
     }
   },
@@ -1200,13 +1250,14 @@
   },
   "Titan Crusher Freddy": {
     "rarity": "Apex",
-    "price": 160000,
+    "price": 120000,
     "img": "https://lh3.googleusercontent.com/d/12kYqohLq6Yotbb5t5JKHKhvH3BzqtgdO=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
-      "Springlock": 20000
+      "Springlock": 15000
     }
   },
+
   "Shiny Shadow Bonnie": {
     "rarity": "Nightmares",
     "price": 800000,
@@ -2834,7 +2885,7 @@
     }
   },
   "Shiny Coffe": {
-    "rarity": "Forgotten", // Укажите правильную редкость, если она известна
+    "rarity": "Forgotten", // 
     "price": 1000000,
     "img": "https://drive.google.com/thumbnail?id=1GOG678AHxKeEyHSSQ-5c1F8HBCtqeQ4g",
     "enchantments": {
