@@ -208,70 +208,68 @@
       }
     }
 
-    /* Новые стили для обводки редкостей */
+    /* Обводка для кнопки APEX */
+    .menu-category.apex {
+      border: 3px solid transparent; /* Прозрачная обводка для градиента */
+      border-image: linear-gradient(to bottom, #8024f5, #d70a4e) 1; /* Градиентная обводка */
+      background: none; /* Убираем фон */
+    }
+    .menu-category.evolutions {
+      border: 3px solid #ffd966; /* Желтая обводка для Evolutions */
+      background: none; /* Убираем фон */
+    }
+    .menu-category.forgotten {
+      border: 3px solid #78b8f0; /* Голубая обводка для Forgotten */
+      background: none; /* Убираем фон */
+    }
+    .menu-category.nightmares {
+      border: 3px solid #9900ff; /* Фиолетовая обводка для Nightmares */
+      background: none; /* Убираем фон */
+    }
+    .menu-category.secrets {
+      border: 3px solid red; /* Красная обводка для Secrets */
+      background: none; /* Убираем фон */
+    }
+    .menu-category.mythics-plus {
+      border: 3px solid #ffd966; /* Желтая обводка для Mythics+ */
+      background: none; /* Убираем фон */
+    }
+    .menu-category.items {
+      border: 3px solid #ffff00; /* Ярко-желтая обводка для Items */
+      background: none; /* Убираем фон */
+    }
+    .menu-category.developer {
+      border: 3px solid #01809e; /* Синяя обводка для Developer */
+      background: none; /* Убираем фон */
+    }
 
-  /* Обводка для кнопки APEX */
-  .menu-category.apex {
-    border: 3px solid transparent; /* Прозрачная обводка для градиента */
-    border-image: linear-gradient(to bottom, #8024f5, #d70a4e) 1; /* Градиентная обводка */
-    background: none; /* Убираем фон */
-  }
-  .menu-category.evolutions {
-    border: 3px solid #ffd966; /* Желтая обводка для Evolutions */
-    background: none; /* Убираем фон */
-  }
-  .menu-category.forgotten {
-    border: 3px solid #78b8f0; /* Голубая обводка для Forgotten */
-    background: none; /* Убираем фон */
-  }
-  .menu-category.nightmares {
-    border: 3px solid #9900ff; /* Фиолетовая обводка для Nightmares */
-    background: none; /* Убираем фон */
-  }
-  .menu-category.secrets {
-    border: 3px solid red; /* Красная обводка для Secrets */
-    background: none; /* Убираем фон */
-  }
-  .menu-category.mythics-plus {
-    border: 3px solid #ffd966; /* Желтая обводка для Mythics+ */
-    background: none; /* Убираем фон */
-  }
-  .menu-category.items {
-    border: 3px solid #ffff00; /* Ярко-желтая обводка для Items */
-    background: none; /* Убираем фон */
-  }
-  .menu-category.developer {
-    border: 3px solid #01809e; /* Синяя обводка для Developer */
-    background: none; /* Убираем фон */
-  }
-
-  /* Стили для обводки юнитов */
-  .unit.apex {
-    border: 3px solid transparent; /* Прозрачная обводка для градиента */
-    border-image: linear-gradient(to bottom, #8024f5, #d70a4e) 1; /* Градиентная обводка */
-    background: none; /* Убираем фон */
-  }
-  .unit.evolutions {
-    border: 3px solid #ffd966; /* Желтая обводка для Evolutions */
-  }
-  .unit.forgotten {
-    border: 3px solid #78b8f0; /* Голубая обводка для Forgotten */
-  }
-  .unit.nightmares {
-    border: 3px solid #9900ff; /* Фиолетовая обводка для Nightmares */
-  }
-  .unit.secrets {
-    border: 3px solid red; /* Красная обводка для Secrets */
-  }
-  .unit.mythics-plus {
-    border: 3px solid #ffd966; /* Желтая обводка для Mythics+ */
-  }
-  .unit.items {
-    border: 3px solid #ffff00; /* Ярко-желтая обводка для Items */
-  }
-  .unit.developer {
-    border: 3px solid #01809e; /* Синяя обводка для Developer */
-  }
+    /* Стили для обводки юнитов */
+    .unit.apex {
+      border: 3px solid transparent; /* Прозрачная обводка для градиента */
+      border-image: linear-gradient(to bottom, #8024f5, #d70a4e) 1; /* Градиентная обводка */
+      background: none; /* Убираем фон */
+    }
+    .unit.evolutions {
+      border: 3px solid #ffd966; /* Желтая обводка для Evolutions */
+    }
+    .unit.forgotten {
+      border: 3px solid #78b8f0; /* Голубая обводка для Forgotten */
+    }
+    .unit.nightmares {
+      border: 3px solid #9900ff; /* Фиолетовая обводка для Nightmares */
+    }
+    .unit.secrets {
+      border: 3px solid red; /* Красная обводка для Secrets */
+    }
+    .unit.mythics-plus {
+      border: 3px solid #ffd966; /* Желтая обводка для Mythics+ */
+    }
+    .unit.items {
+      border: 3px solid #ffff00; /* Ярко-желтая обводка для Items */
+    }
+    .unit.developer {
+      border: 3px solid #01809e; /* Синяя обводка для Developer */
+    }
   </style>
 </head>
 <body>
@@ -313,6 +311,9 @@
       <input type="number" id="quantityInput" placeholder="Quantity" min="1">
       <form id="enchantmentForm" style="display: flex; flex-direction: column; gap: 10px;">
         <label>
+          None<input type="radio" name="enchantment" id="noneCheckbox" style="accent-color: #ccc;">
+        </label>
+        <label>
           Springlock<input type="radio" name="enchantment" id="springlockCheckbox" style="accent-color: #4d36bf;">
         </label>
         <label>
@@ -349,7 +350,7 @@
     let currentContainer = 'left'; // По умолчанию левый контейнер
 
     // Ваши данные юнитов
-        const units = {
+    const units = {
       "Glided Knight": {
         rarity: "Apex",
         price: 900000,
@@ -1109,27 +1110,27 @@
     }
   },
 
-"Old Man Consequences": {
+  "Old Man Consequences": {
     "rarity": "Apex",
     "price": 200000,
     "img": "https://lh3.googleusercontent.com/d/1vUUwCkr-Ks3JSaRNH_VSvO9okkRBjP0h=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
-      "Springlock": 20000
+      "Springlock": 15000
     }
   },
   "Astral Bonnie": {
     "rarity": "Apex",
-    "price": 125000,
+    "price": 120000,
     "img": "https://lh3.googleusercontent.com/d/1cY4dc8K4lqst_KhBxXQxFuPyDglw0k0I=s220?authuser=0",
     "enchantments": {
-      "Vengeance": 15000,
-      "Springlock": 30000
+      "Vengeance": 10000,
+      "Springlock": 15000
     }
   },
   "Gravelord Foxy": {
     "rarity": "Apex",
-    "price": 120000,
+    "price": 100000,
     "img": "https://lh3.googleusercontent.com/d/10u056X-3djTHWKi4bBaSpVJD7mNCWdLH=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
@@ -1138,7 +1139,7 @@
   },
   "Kronos Endo Freddy": {
     "rarity": "Apex",
-    "price": 130000,
+    "price": 110000,
     "img": "https://lh3.googleusercontent.com/d/15ubxRlGUyNUvN9dRFs0GmYN6AOoM4NXX=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
@@ -1147,7 +1148,7 @@
   },
   "Black Ice Freddy": {
     "rarity": "Apex",
-    "price": 13000,
+    "price": 17500,
     "img": "https://lh3.googleusercontent.com/d/1lsiW-GJMuJ5vPRQUWThog1HzSzJ4p4kx=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
@@ -1160,34 +1161,34 @@
     "img": "https://lh3.googleusercontent.com/d/10X-EnuDpApQxF6Sia3xNzjtmVGTtaz8i=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
-      "Springlock": 35000
+      "Springlock": 15000
     }
   },
   "Old Man Krampus": {
     "rarity": "Apex",
-    "price": 370000,
+    "price": 300000,
     "img": "https://lh3.googleusercontent.com/d/1rRt744OPHxOYXmFJ5RvTLHRrbdX32Coo=s220?authuser=0",
     "enchantments": {
-      "Vengeance": 30000,
-      "Springlock": 110000
+      "Vengeance": 10000,
+      "Springlock": 15000
     }
   },
   "Dark Knight Puppet": {
     "rarity": "Apex",
-    "price": 425000,
+    "price": 500000,
     "img": "https://lh3.googleusercontent.com/d/1Y2f6KghoSSGZ5qmOHrQfqakrSr8m4Nce=s220?authuser=0",
     "enchantments": {
-      "Vengeance": 50000,
-      "Springlock": 100000
+      "Vengeance": 10000,
+      "Springlock": 15000
     }
   },
 
   "Apollo Sun": {
     "rarity": "Apex",
-    "price": 45000,
+    "price": 55000,
     "img": "https://lh3.googleusercontent.com/d/1apiTxAum704jT-GjUfFLPEwFOBI_TlP7=s220?authuser=0",
     "enchantments": {
-      "Vengeance": 5000,
+      "Vengeance": 10000,
       "Springlock": 15000
     }
   },
@@ -1202,11 +1203,11 @@
   },
   "Titan Crusher Freddy": {
     "rarity": "Apex",
-    "price": 160000,
+    "price": 120000,
     "img": "https://lh3.googleusercontent.com/d/12kYqohLq6Yotbb5t5JKHKhvH3BzqtgdO=s220?authuser=0",
     "enchantments": {
       "Vengeance": 10000,
-      "Springlock": 20000
+      "Springlock": 15000
     }
   },
 
@@ -1435,97 +1436,1383 @@
     "Springlock": 15000
   }
 },
-"Shiny Wet Floor Bot": {
-  "rarity": "Secrets",
-  "price": 350000,
-  "img": "https://lh3.googleusercontent.com/d/1BjGieHolo5Q9ak4R306PZYmOLjR8giZ3=s220?authuser=0",
-  "enchantments": {
-    "Vengeance": 10000,
-    "Springlock": 15000
-  }
-},
-"Shiny Popstar Chica": {
-  "rarity": "Secrets",
-  "price": 200000,
-  "img": "https://lh3.googleusercontent.com/d/1eLmFN9R17BM73GLMaYTzmA5aEZF1cti4=s220?authuser=0",
-  "enchantments": {
-    "Vengeance": 10000,
-    "Springlock": 15000
-  }
-},
-"Shiny Frost Queen Ballora": {
-  "rarity": "Secrets",
-  "price": 225000,
-  "img": "https://lh3.googleusercontent.com/d/1pYOL7o4AjLYO9a_xUt1Dm_amyF1wp6en=s220?authuser=0",
-  "enchantments": {
-    "Springlock": 15000
-  }
-},
-"Shiny Kingtrap": {
-  "rarity": "Secrets",
-  "price": 450000,
-  "img": "https://lh3.googleusercontent.com/d/17aCUQ8jLNwtQcgWlhnpgKIR72x8AmVtn=s220?authuser=0",
-  "enchantments": {
-    "Springlock": 15000
-  }
-},
-"Shiny Helpy": {
-  "rarity": "Secrets",
-  "price": 450000,
-  "img": "https://lh3.googleusercontent.com/d/14YaN3LRoiyEDgPanVCgE360EZcJYCJqx=s220?authuser=0",
-  "enchantments": {
-    "Springlock": 15000
-  }
-},
-"Shiny DJ Music Man": {
-  "rarity": "Secrets",
-  "price": 450000,
-  "img": "https://lh3.googleusercontent.com/d/1G6k-Kfl6sJY5Z-6AsRVjntYoyqGnxZHt=s220?authuser=0",
-  "enchantments": {}
-},
-"Shiny Freadbear": {
-  "rarity": "Secrets",
-  "price": 75000,
-  "img": "https://lh3.googleusercontent.com/d/1J0EjZgE7IAgQZl9p00pn-20y6UOJdOvV=s220?authuser=0",
-  "enchantments": {
-    "Springlock": 15000
-  }
-},
-"Shiny Spring Bonnie": {
-  "rarity": "Secrets",
-  "price": 200000,
-  "img": "https://lh3.googleusercontent.com/d/1lx_2mM6aq6UTv4D9Wb31VgN2xv4p7iy0=s220?authuser=0",
-  "enchantments": {
-    "Springlock": 15000
-  }
-},
-"Shiny Music Man": {
-  "rarity": "Secrets",
-  "price": 200000,
-  "img": "https://lh3.googleusercontent.com/d/18K8wPDvY6f3J_qbIverVi6TQ-BwseUkX=s220?authuser=0",
-  "enchantments": {
-    "Springlock": 15000
-  }
-},
-"Shiny Eclipse Ballora": {
-  "rarity": "Secrets",
-  "price": 1500000,
-  "img": "https://lh3.googleusercontent.com/d/1bvZ598tyQGfkTZFJk2P7OCea4DaIlGVv=s220?authuser=0",
-  "enchantments": {
-    "Springlock": 15000
-  }
-},
-"Shiny Jar of Pickles": {
-  "rarity": "Secrets",
-  "price": 1500000,
-  "img": "https://lh3.googleusercontent.com/d/1LILvWSSYZzN2rBbP4LVwDUl5586VcsQY=s220?authuser=0",
-  "enchantments": {
-    "Springlock": 15000
-  }
-},
 
-
-
+  "Withered Bonnie": {
+    "rarity": "Secrets",
+    "price": 8750.5,
+    "img": "https://drive.google.com/thumbnail?id=1lWmaTDHnAl0PApm3YTYznryuLGyHNyX-",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Withered Bonnie": {
+    "rarity": "Secrets",
+    "price": 325000.5,
+    "img": "https://drive.google.com/thumbnail?id=1nNUCIAOMNZZFGPL0f75BNE_pTLfF2K56",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Plane Boy": {
+    "rarity": "Secrets",
+    "price": 10001,
+    "img": "https://drive.google.com/thumbnail?id=19QZTihrCuZTxlUy0072SGK31p1jhM9AP",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Shiny Plane Boy": {
+    "rarity": "Secrets",
+    "price": 725000.5,
+    "img": "https://drive.google.com/thumbnail?id=1HRGn3L4j7PcqGwF8SPKNwYpr-ArGAvFA",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Endo 02": {
+    "rarity": "Secrets",
+    "price": 10001,
+    "img": "https://drive.google.com/thumbnail?id=1V5pCK3Y8xEcO62Z--EKCG2wW0HGETAn3",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Shiny Endo 02": {
+    "rarity": "Secrets",
+    "price": null,
+    "img": "https://drive.google.com/thumbnail?id=1_NlpbEfPs9aV4Wb1i-DP__4oGh2pix0p",
+    "enchantments": {
+      "Springlock": 0
+    }
+  },
+  "Pirate Withered Foxy": {
+    "rarity": "Secrets",
+    "price": 2501,
+    "img": "https://drive.google.com/thumbnail?id=1ui8r5adAKg2I0JFxEyuavSwTjgkT6Rp4",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Pirate Withered Foxy": {
+    "rarity": "Secrets",
+    "price": 150001,
+    "img": "https://drive.google.com/thumbnail?id=1LKWLA1ToTh2B44aP7qT1nfCxufYCF2Tv",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Rockin Bonnie": {
+    "rarity": "Secrets",
+    "price": 2000,
+    "img": "https://drive.google.com/thumbnail?id=1n0N3aMlGlmgQHVncumnC35e1OouVpdwN",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Rockin Bonnie": {
+    "rarity": "Secrets",
+    "price": 350001,
+    "img": "https://drive.google.com/thumbnail?id=1A3gcr-psKFSjCQli5iiK6xuR6c_01cFP",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Rad Freddy": {
+    "rarity": "Secrets",
+    "price": 300,
+    "img": "https://drive.google.com/thumbnail?id=1m3Nxx440nPB2-qbtaT1xvU4-mTroMb5H",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Rad Freddy": {
+    "rarity": "Secrets",
+    "price": 100001,
+    "img": "https://drive.google.com/thumbnail?id=1viT-1q_4QX4PbpZ21w6tyX0nf__qQ3hy",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Algae Fredbear": {
+    "rarity": "Secrets",
+    "price": 5001,
+    "img": "https://drive.google.com/thumbnail?id=1v51iY4DeXq6S5VPEBbW6L4TQyWHU2rzZ",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Algae Fredbear": {
+    "rarity": "Secrets",
+    "price": 250001,
+    "img": "https://drive.google.com/thumbnail?id=1I6C8ZeJUa0bzpr0fjKp04I4vz8FiXHuL",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Withered Golden Freddy": {
+    "rarity": "Secrets",
+    "price": 15001,
+    "img": "https://drive.google.com/thumbnail?id=1fKZehF7qpmKc1XjjbbzrDxZXW-ImPAKT",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Shiny Withered Golden Freddy": {
+    "rarity": "Secrets",
+    "price": 900001,
+    "img": "https://drive.google.com/thumbnail?id=1C1Iod5KcSciJzGtdabi8Sepnw1C8AtV6",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Spring Bonnie": {
+    "rarity": "Secrets",
+    "price": 150,
+    "img": "https://drive.google.com/thumbnail?id=19HSONCyllMYS0Qj8jJYmFCAuUuBs-qjx",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Spring Bonnie": {
+    "rarity": "Secrets",
+    "price": 200000,
+    "img": "https://drive.google.com/thumbnail?id=1lx_2mM6aq6UTv4D9Wb31VgN2xv4p7iy0",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Phantom Puppet": {
+    "rarity": "Secrets",
+    "price": 375,
+    "img": "https://drive.google.com/thumbnail?id=1WEpMF1nGjydRXqoj9GfOstduSJxWtgIE",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Phantom Puppet": {
+    "rarity": "Secrets",
+    "price": 100001,
+    "img": "https://drive.google.com/thumbnail?id=1LdV8d8r1c9ONnUeYyzzjD_JN6D0Tg1dX",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Phantom Cupcake": {
+    "rarity": "Secrets",
+    "price": 60,
+    "img": "https://drive.google.com/thumbnail?id=12x6qG2pfJL8U6fuzTNy8YaTuaNJ5MWTT",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Phantom Cupcake": {
+    "rarity": "Secrets",
+    "price": 1500,
+    "img": "https://drive.google.com/thumbnail?id=1UqKWJZy9SOYU7RE7Fk1Ok7eJRNB4vAhP",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Phantom Balloon Boy": {
+    "rarity": "Secrets",
+    "price": 225,
+    "img": "https://drive.google.com/thumbnail?id=1kjhJ32_bvS9YPuZbt8Y_MW8OQ2hpBsJW",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Phantom Balloon Boy": {
+    "rarity": "Secrets",
+    "price": 50001,
+    "img": "https://drive.google.com/thumbnail?id=1x2SUG12nlA-OarmOotqYULi0o4n7h_t0",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Seven Seas Foxy": {
+    "rarity": "Secrets",
+    "price": 20001,
+    "img": "https://drive.google.com/thumbnail?id=18g5Dgu-7vyK1c4mHXAs1mvRY79ZoDtCL",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Shiny Seven Seas Foxy": {
+    "rarity": "Secrets",
+    "price": 300001,
+    "img": "https://drive.google.com/thumbnail?id=1RUjt4k0obb9iED3MotSdMi5z5wTB6rvN",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Patriot Freddy": {
+    "rarity": "Secrets",
+    "price": 1501,
+    "img": "https://drive.google.com/thumbnail?id=1zldIqIGHlLudF4F33HoQvTaNGXHN4Puz",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Patriot Freddy": {
+    "rarity": "Secrets",
+    "price": 200001,
+    "img": "https://drive.google.com/thumbnail?id=14NYNg73ZSoA5UUoKzhezTMupGCyeGIgN",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Witch Toy Chica": {
+    "rarity": "Secrets",
+    "price": 2001,
+    "img": "https://drive.google.com/thumbnail?id=1HnwmS79YO_jH6xwp8lroaUx0VdPs5Eju",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Witch Toy Chica": {
+    "rarity": "Secrets",
+    "price": 150001,
+    "img": "https://drive.google.com/thumbnail?id=1I87Y5LR-ShoAmCWCKED9k4d4EhR9QhAi",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Sentinel Bonnie": {
+    "rarity": "Secrets",
+    "price": 3001,
+    "img": "https://drive.google.com/thumbnail?id=1pyoY3LoSg7wURFt46Kv8yiplSbWPi3XQ",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Sentinel Bonnie": {
+    "rarity": "Secrets",
+    "price": 200001,
+    "img": "https://drive.google.com/thumbnail?id=1ha2ACY8Q6bMBYmYovhI_zNDWot49ikWd",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "War Machine Foxy": {
+    "rarity": "Secrets",
+    "price": 25001,
+    "img": "https://drive.google.com/thumbnail?id=1r3ZhV-0I9lYsfaebdE3DIlnYQu37jDEx",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Shiny War Machine Foxy": {
+    "rarity": "Secrets",
+    "price": 525000.5,
+    "img": "https://drive.google.com/thumbnail?id=12mvmKeZzui8D_FNCRsvFgAoy2vdIGNk2",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Abyssal Foxy": {
+    "rarity": "Secrets",
+    "price": 1750.5,
+    "img": "https://drive.google.com/thumbnail?id=1xvgo-dPiMR5oInO4JLfR7R8LUw2kXjTr",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Abyssal Foxy": {
+    "rarity": "Secrets",
+    "price": 225000.5,
+    "img": "https://drive.google.com/thumbnail?id=1EcYPzXMmNp58bChguQJdEB35ZZHsfPRD",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Commando Endo": {
+    "rarity": "Secrets",
+    "price": 275,
+    "img": "https://drive.google.com/thumbnail?id=1F5SIFzh6ZRWL_Ka7AtSeVBj_8AuEnW7M",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Commando Endo": {
+    "rarity": "Secrets",
+    "price": 80001,
+    "img": "https://drive.google.com/thumbnail?id=1dKENlRiEDTd-gvEsQ697e74dR2wLQMEL",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Enforcer Bonnie": {
+    "rarity": "Secrets",
+    "price": 1001,
+    "img": "https://drive.google.com/thumbnail?id=1iWUi3mu-a4u1fZTj5nxg6oJBwe9ZrbND",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Enforcer Bonnie": {
+    "rarity": "Secrets",
+    "price": 250001,
+    "img": "https://drive.google.com/thumbnail?id=1sUzwdHlJJmhKqL0ehUjLV223z0C7CZsN",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Rocketeer Mangle": {
+    "rarity": "Secrets",
+    "price": 250,
+    "img": "https://drive.google.com/thumbnail?id=1QRCtjPf484jan7KkF0K9jBAg3tbvpkol",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Rocketeer Mangle": {
+    "rarity": "Secrets",
+    "price": 8500.5,
+    "img": "https://drive.google.com/thumbnail?id=1JMBqRNBjeVW-KzGHvY0-mRRhOL3v_SLE",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Cupcake Tank": {
+    "rarity": "Secrets",
+    "price": 500,
+    "img": "https://drive.google.com/thumbnail?id=1vYgLxXLCunx5f60mPRkgyTeGOGHkisug",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Cupcake Tank": {
+    "rarity": "Secrets",
+    "price": 5001,
+    "img": "https://drive.google.com/thumbnail?id=1sCHiEQpslJeDB0fTg4sdbMm7xEWYMCIv",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Tarnished Spring Bonnie": {
+    "rarity": "Secrets",
+    "price": 8001,
+    "img": "https://drive.google.com/thumbnail?id=1U8ZaxhJnOzPADnHdzRc1DHsIsRI1O1Dg",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Tarnished Spring Bonnie": {
+    "rarity": "Secrets",
+    "price": 162500.5,
+    "img": "https://drive.google.com/thumbnail?id=1isOGpZHV-bIWULLvZX02DxB9P1cUm5-E",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Scott": {
+    "rarity": "Secrets",
+    "price": 5001,
+    "img": "https://drive.google.com/thumbnail?id=1AgC8CKk3856KZDaldP72Ng6FAlb-Ttlh",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Scott": {
+    "rarity": "Secrets",
+    "price": 150001,
+    "img": "https://drive.google.com/thumbnail?id=1m4IZg7HNjOdX8lhG37ZmdXxtcNGcUxqs",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "The Crying Child": {
+    "rarity": "Secrets",
+    "price": 350,
+    "img": "https://drive.google.com/thumbnail?id=1yh8WOdYaV0jRBlRMm6qbTF5_y2Hf2F-L",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny The Crying Child": {
+    "rarity": "Secrets",
+    "price": 100001,
+    "img": "https://drive.google.com/thumbnail?id=1Yfh_ekanTJEiwVGU1OQLkyTHzWccqsjl",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Nightmare Bonnie": {
+    "rarity": "Secrets",
+    "price": 225,
+    "img": "https://drive.google.com/thumbnail?id=1JdKR15_-ixARTTr-_s5xeIYyKv3ksZ7L",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Nightmare Bonnie": {
+    "rarity": "Secrets",
+    "price": 1500,
+    "img": "https://drive.google.com/thumbnail?id=1YM6VnX5C4DbGSB0m2vU38KBsAQi5XuDy",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Freddle": {
+    "rarity": "Secrets",
+    "price": 2001,
+    "img": "https://drive.google.com/thumbnail?id=1E-UY3HqyTv6Pr02RPIkd-dKSCGXq09cO",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Freddle": {
+    "rarity": "Secrets",
+    "price": 100001,
+    "img": "https://drive.google.com/thumbnail?id=10X5q04hTmuD6KtK0gcvZNJitjgmF5_A6",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Nightmare Fredbear": {
+    "rarity": "Secrets",
+    "price": 800,
+    "img": "https://drive.google.com/thumbnail?id=1teh0i9Cg3MOOpQ-lrHbAgaB7Ine_5AuE",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Nightmare Fredbear": {
+    "rarity": "Secrets",
+    "price": 100001,
+    "img": "https://drive.google.com/thumbnail?id=1zmRjDyXxAlJRT-xjAYKbPTFUbfIVx4_w",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Fredbear": {
+    "rarity": "Secrets",
+    "price": 100,
+    "img": "https://drive.google.com/thumbnail?id=1_bHiIS8J0sW7P7Wji9MWTRs7xsulX8lj",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Fredbear": {
+    "rarity": "Secrets",
+    "price": 80001,
+    "img": "https://drive.google.com/thumbnail?id=1J0EjZgE7IAgQZl9p00pn-20y6UOJdOvV",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Nightmare": {
+    "rarity": "Secrets",
+    "price": 300,
+    "img": "https://drive.google.com/thumbnail?id=1biexVJ-F5Cntyyv3CxL1UTuLzqyb1W-g",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Nightmare": {
+    "rarity": "Secrets",
+    "price": 2500.5,
+    "img": "https://drive.google.com/thumbnail?id=1H_oOW0Io28gaeWID3cXBKBjCl0R4gDHi",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Endo 04": {
+    "rarity": "Secrets",
+    "price": 60,
+    "img": "https://drive.google.com/thumbnail?id=1s4H0j30wyOa30N1mrcQ-lsGKvLXjCy4x",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Endo 04": {
+    "rarity": "Secrets",
+    "price": 675,
+    "img": "https://drive.google.com/thumbnail?id=1301DMAvTqWtNji788pVGkZA3bm1ufjHV",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Rave Demon Bonnie": {
+    "rarity": "Secrets",
+    "price": 175,
+    "img": "https://drive.google.com/thumbnail?id=1r3YJWrPWDv48b0Q_VNfwOtkfSUav5wTO",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Rave Demon Bonnie": {
+    "rarity": "Secrets",
+    "price": 15001,
+    "img": "https://drive.google.com/thumbnail?id=1wYfEwQLpxEoyZPSjcWIrZoNOzKQZus7F",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Hydra Mangle": {
+    "rarity": "Secrets",
+    "price": 375,
+    "img": "https://drive.google.com/thumbnail?id=1qwvWHym2jlxF4USqQqZvc2TzXCU_ICKb",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Hydra Mangle": {
+    "rarity": "Secrets",
+    "price": 27500.5,
+    "img": "https://drive.google.com/thumbnail?id=1F4cZZzpcwNT7ul6sHsXkPhOQkSgE0bUY",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Purple Guy": {
+    "rarity": "Secrets",
+    "price": 800,
+    "img": "https://drive.google.com/thumbnail?id=1vzelxEWE5L4T3TkSvlsytMORE3V2nNB5",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Purple Guy": {
+    "rarity": "Secrets",
+    "price": 18001,
+    "img": "https://drive.google.com/thumbnail?id=11EYHYnVME7KwAxt0AVM8TFyOwTZK84OG",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Jackpot Freddy": {
+    "rarity": "Secrets",
+    "price": 175,
+    "img": "https://drive.google.com/thumbnail?id=1G6ha7ZkgmJjV4ixoLfGI0pWzkGw0ZU26",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Jackpot Freddy": {
+    "rarity": "Secrets",
+    "price": 1500,
+    "img": "https://drive.google.com/thumbnail?id=1STM8ZZiERL6Xrf0apNABcUTDSYNQ3x3K",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Bounty Mangle": {
+    "rarity": "Secrets",
+    "price": 1001,
+    "img": "https://drive.google.com/thumbnail?id=1-c2d5wWaHxJCdxYdduCEMo17c_LvsXtQ",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Bounty Mangle": {
+    "rarity": "Secrets",
+    "price": 30000,
+    "img": "https://drive.google.com/thumbnail?id=13UwMl9_n_Stwg6qNd7PIl1cROsnc0xal",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Slick Bonnie": {
+    "rarity": "Secrets",
+    "price": 325,
+    "img": "https://drive.google.com/thumbnail?id=1AVE3K7zoNOtC-Zxen2reISXkxV7gSCSo",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Slick Bonnie": {
+    "rarity": "Secrets",
+    "price": 20001,
+    "img": "https://drive.google.com/thumbnail?id=1YSyl95aI4qglXQsqGzV06WNGQpqPgxQJ",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Gunslinger Endo": {
+    "rarity": "Secrets",
+    "price": 2500,
+    "img": "https://drive.google.com/thumbnail?id=1_FYobMTQ4h4X_RYDC8k9_IFOr96RF9rJ",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Gunslinger Endo": {
+    "rarity": "Secrets",
+    "price": 325000.5,
+    "img": "https://drive.google.com/thumbnail?id=1xsW4EHZEeCkaOmyFiAft-URrqjyUvX79",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Blindeye Foxy": {
+    "rarity": "Secrets",
+    "price": 375,
+    "img": "https://drive.google.com/thumbnail?id=14RdbIq4sacH-Qt1ZvK-AiMnmzYfteoR7",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Blindeye Foxy": {
+    "rarity": "Secrets",
+    "price": 3001,
+    "img": "https://drive.google.com/thumbnail?id=11iRkPMp7hgDfcS__PNP0nGiHsZ3FEj8B",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Flame Empress Chica": {
+    "rarity": "Secrets",
+    "price": 30001,
+    "img": "https://drive.google.com/thumbnail?id=1Ps-mCXeBBsW5nxHL1QrvRydvXPhfNhMi",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Shiny Flame Empress Chica": {
+    "rarity": "Secrets",
+    "price": 850001,
+    "img": "https://drive.google.com/thumbnail?id=1MN4ea8OVFdEvGzmkusVglVx3TJePZS24",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Phone Guy": {
+    "rarity": "Secrets",
+    "price": 1001,
+    "img": "https://drive.google.com/thumbnail?id=1cq9RLmCKnuk7f5dFAk_ErzeSp7KuSllr",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Phone Guy": {
+    "rarity": "Secrets",
+    "price": 20001,
+    "img": "https://drive.google.com/thumbnail?id=1XcRQ6p8VhV6EbuZghc9PnE1HwOTJl4r_",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Reactor Freddy": {
+    "rarity": "Secrets",
+    "price": 45000.5,
+    "img": "https://drive.google.com/thumbnail?id=1YjkjTJA4uc_kn5EtudgLNMajt0FnEI2b",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Shiny Reactor Freddy": {
+    "rarity": "Secrets",
+    "price": null,
+    "img": "https://drive.google.com/thumbnail?id=1XbgnGrixmA7yUpAYfMmv4SuCWLxwZOAP",
+    "enchantments": {
+      "Springlock": 0
+    }
+  },
+  "Circus Baby": {
+    "rarity": "Secrets",
+    "price": 225,
+    "img": "https://drive.google.com/thumbnail?id=1hmnVRLzxPRJnKDsNsk7vwGg-q8IkKLck",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Circus Baby": {
+    "rarity": "Secrets",
+    "price": 1250,
+    "img": "https://drive.google.com/thumbnail?id=1NwZd0wPSljU7DZbTBywPFdoMqR0IWnqR",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Music Man": {
+    "rarity": "Secrets",
+    "price": 200,
+    "img": "https://drive.google.com/thumbnail?id=1LsGCV7rCEYn61b0rtn0sXvceYbpyXsIw",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Music Man": {
+    "rarity": "Secrets",
+    "price": 160000,
+    "img": "https://drive.google.com/thumbnail?id=18K8wPDvY6f3J_qbIverVi6TQ-BwseUkX",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Mendo": {
+    "rarity": "Secrets",
+    "price": 3001,
+    "img": "https://drive.google.com/thumbnail?id=1gPDkYkzAcLtHbnG9VV9FBlYezqDJywYK",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Mendo": {
+    "rarity": "Secrets",
+    "price": 125001,
+    "img": "https://drive.google.com/thumbnail?id=18h49d7Z5WkH8LdL2esZ7Pkx4IV8gyCyV",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Tangle": {
+    "rarity": "Secrets",
+    "price": 100,
+    "img": "https://drive.google.com/thumbnail?id=1b9Bxch4fogSpcg9OhBG228AiR86_GvwD",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Tangle": {
+    "rarity": "Secrets",
+    "price": 1000,
+    "img": "https://drive.google.com/thumbnail?id=18FkG2dp5fF3guFFY74HktDrisgTlpFGB",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Lolbit": {
+    "rarity": "Secrets",
+    "price": 8000,
+    "img": "https://drive.google.com/thumbnail?id=1sjno4SmJ0JFgZ9nSqbYm3ptDamqF0jpa",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Lolbit": {
+    "rarity": "Secrets",
+    "price": 300001,
+    "img": "https://drive.google.com/thumbnail?id=1UsR29Dsh78qd3QMeNck12-eYOJU9dVDZ",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Elizabeth": {
+    "rarity": "Secrets",
+    "price": 400,
+    "img": "https://drive.google.com/thumbnail?id=1g0pKZrTd6PfFEOGksssVQMsh0SgjKrP1",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Elizabeth": {
+    "rarity": "Secrets",
+    "price": 22500.5,
+    "img": "https://drive.google.com/thumbnail?id=1EPF4qpj05pn9beX0ly_riWpShtm7qTk1",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Fazbear Mafia": {
+    "rarity": "Secrets",
+    "price": 350,
+    "img": "https://drive.google.com/thumbnail?id=1DcksPBdrEsys-9S05c9LyzOX77oXNMvN",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Fazbear Mafia": {
+    "rarity": "Secrets",
+    "price": 3001,
+    "img": "https://drive.google.com/thumbnail?id=13GUIyZXkcIAHCuIbMO9ivPiX50WRvKbt",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Jack O Endo": {
+    "rarity": "Secrets",
+    "price": 42.5,
+    "img": "https://drive.google.com/thumbnail?id=1Z5VeswjoizLJfmP-Jb2Nb6Mas6SQmXrF",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Jack O Endo": {
+    "rarity": "Secrets",
+    "price": 100,
+    "img": "https://drive.google.com/thumbnail?id=1WLzOus95GXdWi3uKIEk-gwk4bCl_AHBR",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Grimm Foxy": {
+    "rarity": "Secrets",
+    "price": 175,
+    "img": "https://drive.google.com/thumbnail?id=1Si7MuiO1nNfBUvcINHF_nosOL5XgyZtb",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Grimm Foxy": {
+    "rarity": "Secrets",
+    "price": 1250,
+    "img": "https://drive.google.com/thumbnail?id=1TeGfeBS2VBq8fKkWbso4NIg-yuLy58Pg",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Clowntrap": {
+    "rarity": "Secrets",
+    "price": 2501,
+    "img": "https://drive.google.com/thumbnail?id=1Dhb9DBGV-TK5iOlr52yIAm_IRaYXv4Li",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Clowntrap": {
+    "rarity": "Secrets",
+    "price": 67500,
+    "img": "https://drive.google.com/thumbnail?id=1QV5hk0Z4auVbNq8xy_ERnpAIGmfISZda",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Jack O Cannon": {
+    "rarity": "Secrets",
+    "price": 250,
+    "img": "https://drive.google.com/thumbnail?id=1pN5nkdV6sp53IU0l3VYACXSym_xo1Abk",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Jack O Cannon": {
+    "rarity": "Secrets",
+    "price": 2250,
+    "img": "https://drive.google.com/thumbnail?id=1QwfhKH1J9K0uSlSluLOMrYDACjmBlfpW",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Eclipse Ballora": {
+    "rarity": "Secrets",
+    "price": 30000,
+    "img": "https://drive.google.com/thumbnail?id=1OdZErzOKO6dKzj-_8Yn45C0ngZRCXT7y",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Shiny Eclipse Ballora": {
+    "rarity": "Secrets",
+    "price": null,
+    "img": "https://drive.google.com/thumbnail?id=1bvZ598tyQGfkTZFJk2P7OCea4DaIlGVv",
+    "enchantments": {
+      "Springlock": 0
+    }
+  },
+  "Super Freddy": {
+    "rarity": "Secrets",
+    "price": 275,
+    "img": "https://drive.google.com/thumbnail?id=1j0U_0gsccaajf43P-NKjtoMWlz1X8o1f",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Super Freddy": {
+    "rarity": "Secrets",
+    "price": 2000,
+    "img": "https://drive.google.com/thumbnail?id=1l1NAy57KFhgNQMBPFIpFEq2y9M7K2eeI",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Nightguard Afton": {
+    "rarity": "Secrets",
+    "price": 1001,
+    "img": "https://drive.google.com/thumbnail?id=1Hmk-higrfAUj2nU6TIB5os8xudXHVCyp",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Nightguard Afton": {
+    "rarity": "Secrets",
+    "price": 28000,
+    "img": "https://drive.google.com/thumbnail?id=1IaE2Prleo8Fw9d5g1AIiA7Dk_aJjehhK",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Rockstar Foxy": {
+    "rarity": "Secrets",
+    "price": 300,
+    "img": "https://drive.google.com/thumbnail?id=1XwFG1kmf0itGCgUQv_k1zQ0lg2_5r4nB",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Rockstar Foxy": {
+    "rarity": "Secrets",
+    "price": 13001,
+    "img": "https://drive.google.com/thumbnail?id=1RrLyMyMw-OVKaWVbwiZCMGdOGrAA0fM0",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Helpy": {
+    "rarity": "Secrets",
+    "price": 600,
+    "img": "https://drive.google.com/thumbnail?id=1IPbgUxEJPdjM_Rk_R6t0tFRtCYUp-MOy",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Helpy": {
+    "rarity": "Secrets",
+    "price": 425000.5,
+    "img": "https://drive.google.com/thumbnail?id=14YaN3LRoiyEDgPanVCgE360EZcJYCJqx",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Security Puppet": {
+    "rarity": "Secrets",
+    "price": 200,
+    "img": "https://drive.google.com/thumbnail?id=1lkO2mz5M0ZSaIDvPFh81Nr8OWk1h-xbn",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Security Puppet": {
+    "rarity": "Secrets",
+    "price": 1500,
+    "img": "https://drive.google.com/thumbnail?id=1nCR48ZDGgwH2_H-2wDPisZvZQnaW-wpJ",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Molten Freddy": {
+    "rarity": "Secrets",
+    "price": 450,
+    "img": "https://drive.google.com/thumbnail?id=1Pw2XsT0mR9YHsydccpo9c4YYrUhq9jeO",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Molten Freddy": {
+    "rarity": "Secrets",
+    "price": 2250,
+    "img": "https://drive.google.com/thumbnail?id=1zNfZ7urzTkvA8JhCtkXL-uoyj8q9qZ9L",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Bucket Bob": {
+    "rarity": "Secrets",
+    "price": 500,
+    "img": "https://drive.google.com/thumbnail?id=10qdua_1mxK8wUiSaQ4qRZOd77IBkW9ud",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Bucket Bob": {
+    "rarity": "Secrets",
+    "price": 7500.5,
+    "img": "https://drive.google.com/thumbnail?id=1Nc5euKJbKeAUNprxR2qdzwSwuZF2Bwiv",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Scrap Baby": {
+    "rarity": "Secrets",
+    "price": 4500,
+    "img": "https://drive.google.com/thumbnail?id=1vQDDtjpz-1kslU2_PVf6XQNEKwwXrCSL",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Scrap Baby": {
+    "rarity": "Secrets",
+    "price": 150001,
+    "img": "https://drive.google.com/thumbnail?id=1iamIXD4Xghq0ZKI6ha4Io6WPHrBPwZGt",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Jar Of Pickles": {
+    "rarity": "Secrets",
+    "price": 300001,
+    "img": "https://drive.google.com/thumbnail?id=12b4sCmHYHKsEWHQ-11JIG5NVxTWKZ9Nl",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Shiny Jar Of Pickles": {
+    "rarity": "Secrets",
+    "price": null,
+    "img": "https://drive.google.com/thumbnail?id=1LILvWSSYZzN2rBbP4LVwDUl5586VcsQY",
+    "enchantments": {
+      "Springlock": 0
+    }
+  },
+  "Popstar Chica": {
+    "rarity": "Secrets",
+    "price": 300,
+    "img": "https://drive.google.com/thumbnail?id=1w0fT48pyp86bgAGPa_SMa8OaYDvm7pxf",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Popstar Chica": {
+    "rarity": "Secrets",
+    "price": 212500,
+    "img": "https://drive.google.com/thumbnail?id=1eLmFN9R17BM73GLMaYTzmA5aEZF1cti4",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Steampunk Mangle": {
+    "rarity": "Secrets",
+    "price": 450,
+    "img": "https://drive.google.com/thumbnail?id=1Mj4NWfvbAuNnS9_VhzAYHdr3TqKlEQto",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Steampunk Mangle": {
+    "rarity": "Secrets",
+    "price": 17500.5,
+    "img": "https://drive.google.com/thumbnail?id=1zD4iEFbXWfiZ1-7R7hsY1WLedNMG2Ajd",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Duelist Puppet": {
+    "rarity": "Secrets",
+    "price": 700,
+    "img": "https://drive.google.com/thumbnail?id=1Cfy4hul3O-lEq3EXEFA6yTwfNnuis0lF",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Duelist Puppet": {
+    "rarity": "Secrets",
+    "price": 100001,
+    "img": "https://drive.google.com/thumbnail?id=1tr_tH7jJ2p4eR5nfgfsYs9vEwNAFUoLE",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Mechanic Afton": {
+    "rarity": "Secrets",
+    "price": 450,
+    "img": "https://drive.google.com/thumbnail?id=19O6t5QUjH4YfFH7QPkAUsjm1UgVw2e7F",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Mechanic Afton": {
+    "rarity": "Secrets",
+    "price": 10001,
+    "img": "https://drive.google.com/thumbnail?id=1tjkiWaQZPOSfSl9m-cDKpM7empcXj4N0",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Geared Endo": {
+    "rarity": "Secrets",
+    "price": 75,
+    "img": "https://drive.google.com/thumbnail?id=1Zq2nMIQBo1CprZNaI62WcyZkHsO0MdJK",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Geared Endo": {
+    "rarity": "Secrets",
+    "price": 650,
+    "img": "https://drive.google.com/thumbnail?id=1ASYZGJZU8ZIKCBSctJryBgkJCv94_c5k",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Tarnished Fredbear": {
+    "rarity": "Secrets",
+    "price": 8001,
+    "img": "https://drive.google.com/thumbnail?id=1qgQbT9ApcXEGJ4Gz71aGUMDNVu5cbCsy",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Tarnished Fredbear": {
+    "rarity": "Secrets",
+    "price": 150001,
+    "img": "https://drive.google.com/thumbnail?id=19QLA56tXbiqmwZygbneXieUckhVsMACW",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Gladiator Foxy": {
+    "rarity": "Secrets",
+    "price": 25,
+    "img": "https://drive.google.com/thumbnail?id=1gEuDVqd5hti2SAcHR_GE2PQc4BxSVzg5",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Gladiator Foxy": {
+    "rarity": "Secrets",
+    "price": 100,
+    "img": "https://drive.google.com/thumbnail?id=1MGO0KL8sVDQQx3aBfReoLTch2Xq0kQe5",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Reindeer Withered Bonnie": {
+    "rarity": "Secrets",
+    "price": 37.5,
+    "img": "https://drive.google.com/thumbnail?id=14GA07V0--Lz_kxQg5qKrSHr-3yxDmJux",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Reindeer Withered Bonnie": {
+    "rarity": "Secrets",
+    "price": 100,
+    "img": "https://drive.google.com/thumbnail?id=146m7wXmf74RSe4a_xPcR-T4zqWcl9XIZ",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Frost Queen Ballora": {
+    "rarity": "Secrets",
+    "price": 1250,
+    "img": "https://drive.google.com/thumbnail?id=1r3L11LVQuZTvJLfA3HtyB8vzM4ZF4r-s",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Frost Queen Ballora": {
+    "rarity": "Secrets",
+    "price": 212500.5,
+    "img": "https://drive.google.com/thumbnail?id=1pYOL7o4AjLYO9a_xUt1Dm_amyF1wp6en",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Freddy Frostbear": {
+    "rarity": "Secrets",
+    "price": 1000,
+    "img": "https://drive.google.com/thumbnail?id=1JlLGrdywn3DbiBWNzP08guQZHBWbTqp6",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Freddy Frostbear": {
+    "rarity": "Secrets",
+    "price": 10001,
+    "img": "https://drive.google.com/thumbnail?id=1Qc75-WosUCQcd4XwqlQOy8Ii6j6YepKR",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Frost Plushtrap": {
+    "rarity": "Secrets",
+    "price": 25,
+    "img": "https://drive.google.com/thumbnail?id=1R8hj2BEw4JVEx5DQw3ckhOIlNueS6S6W",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Frost Plushtrap": {
+    "rarity": "Secrets",
+    "price": 200,
+    "img": "https://drive.google.com/thumbnail?id=1FqgO2XQt7DSWwCnI05ndG7xbGXH_Wnu7",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Montgomery Gator": {
+    "rarity": "Secrets",
+    "price": 2000,
+    "img": "https://drive.google.com/thumbnail?id=10luPwVNXY-DfvANIw1pzqx2Oa8FsQzv2",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Montgomery Gator": {
+    "rarity": "Secrets",
+    "price": 20000,
+    "img": "https://drive.google.com/thumbnail?id=12wNjoRfjQA_RfM7HYvregmufxVetu1yA",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "DJ Music Man": {
+    "rarity": "Secrets",
+    "price": 1000,
+    "img": "https://drive.google.com/thumbnail?id=1NsFCtGncQrdQDkvq4n3etCmBLZTMAl0S",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny DJ Music Man": {
+    "rarity": "Secrets",
+    "price": 450001,
+    "img": "https://drive.google.com/thumbnail?id=1G6k-Kfl6sJY5Z-6AsRVjntYoyqGnxZHt",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Sunshine": {
+    "rarity": "Secrets",
+    "price": 1000,
+    "img": "https://drive.google.com/thumbnail?id=1sPLj-vX5Ven1zCzseGuBy_Y09XOjKk1z",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Sunshine": {
+    "rarity": "Secrets",
+    "price": 2000,
+    "img": "https://drive.google.com/thumbnail?id=1s-fkO0LPNU43fJdyUksVE4i7c7_HN1WE",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Wet Floor Bot": {
+    "rarity": "Secrets",
+    "price": 1001,
+    "img": "https://drive.google.com/thumbnail?id=18RnoWie0MMRXSUZ353v30RIJ-aIIim-k",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Wet Floor Bot": {
+    "rarity": "Secrets",
+    "price": 500001,
+    "img": "https://drive.google.com/thumbnail?id=1BjGieHolo5Q9ak4R306PZYmOLjR8giZ3",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Foxseidon": {
+    "rarity": "Secrets",
+    "price": 250,
+    "img": "https://drive.google.com/thumbnail?id=1ZoLTym3vsQXM8Jj5XK_hhrR7mp8zR2Et",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Foxseidon": {
+    "rarity": "Secrets",
+    "price": 500,
+    "img": "https://drive.google.com/thumbnail?id=1epAvIQPY7vB1ARkVMV9SlGiygCAvpG_c",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Zeus Fredeus": {
+    "rarity": "Secrets",
+    "price": 1250,
+    "img": "https://drive.google.com/thumbnail?id=1_G615S4Pv_LunhNQ08v3BGI3S9khoKUs",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Zeus Fredeus": {
+    "rarity": "Secrets",
+    "price": 15000,
+    "img": "https://drive.google.com/thumbnail?id=1IH-nJYJ19OPk1cvyESw0_3lW0Texgt0y",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Kingtrap": {
+    "rarity": "Secrets",
+    "price": 3000,
+    "img": "https://drive.google.com/thumbnail?id=1vDRdTE2Ln-2BMFe7XSNfXxa6LyXw00dv",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Kingtrap": {
+    "rarity": "Secrets",
+    "price": 450000,
+    "img": "https://drive.google.com/thumbnail?id=17aCUQ8jLNwtQcgWlhnpgKIR72x8AmVtn",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Forest Nymph Bonnie": {
+    "rarity": "Secrets",
+    "price": 900,
+    "img": "https://drive.google.com/thumbnail?id=1F3WYnK4lT8C9SGyGmjI317QHE0mkC70X",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Forest Nymph Bonnie": {
+    "rarity": "Secrets",
+    "price": 10000,
+    "img": "https://drive.google.com/thumbnail?id=1CkTFlYhXbp_bjyBqQC0St-UY56d8bMNN",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "The Mimic": {
+    "rarity": "Secrets",
+    "price": 200001,
+    "img": "https://drive.google.com/thumbnail?id=11kkwbu7QdGuqMlyJTwk1UpZP27ToIQbd",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Shiny The Mimic": {
+    "rarity": "Secrets",
+    "price": 600001,
+    "img": "https://drive.google.com/thumbnail?id=1ZNLqzVsFjvHC2u-58yZiELd7Y448C_rG",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Candy Cadet": {
+    "rarity": "Secrets",
+    "price": 9000,
+    "img": "https://drive.google.com/thumbnail?id=1WbjtMxDPn3E-mihErGMdE0SZ5WYWzkbS",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Candy Cadet": {
+    "rarity": "Secrets",
+    "price": 550000,
+    "img": "https://drive.google.com/thumbnail?id=1Be9bWbWfjgZ8_QdF4zTbpdYPrQRaS6IL",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
+  "Ruined Glamrock Bonnie": {
+    "rarity": "Secrets",
+    "price": 8750,
+    "img": "https://drive.google.com/thumbnail?id=1tKnPiP7lxqCo22rWGfzsgo7oA_7H66s8",
+    "enchantments": {
+      "Springlock": 1000
+    }
+  },
+  "Shiny Ruined Glamrock Bonnie": {
+    "rarity": "Secrets",
+    "price": 17500,
+    "img": "https://drive.google.com/thumbnail?id=1VH3TwVzxxyxX1UoPIWyPKkZzLEk_inUV",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Fan": {
+    "rarity": "Secrets",
+    "price": 10000,
+    "img": "https://drive.google.com/thumbnail?id=1ITsJSnFebfP4sveQW7Pl3KBVRqoFj7je",
+    "enchantments": {
+      "Springlock": 5000
+    }
+  },
+  "Shiny Fan": {
+    "rarity": "Secrets",
+    "price": 212500.5,
+    "img": "https://drive.google.com/thumbnail?id=1A_VD5WsgyFm1-zI2SlJYrZPsNjY_U1OW",
+    "enchantments": {
+      "Springlock": 15000
+    }
+  },
 
 };
 
@@ -1589,32 +2876,31 @@
         return;
       }
 
+      // Проверяем, выбрано ли зачарование
       const selectedEnchantmentRadio = document.querySelector('input[name="enchantment"]:checked');
-      if (!selectedEnchantmentRadio) {
-        alert('Ошибка: Зачарование не выбрано');
-        return;
-      }
-      selectedEnchantment = selectedEnchantmentRadio.parentElement.textContent.trim();
+      selectedEnchantment = selectedEnchantmentRadio ? selectedEnchantmentRadio.parentElement.textContent.trim() : '';
 
       addUnit(quantity);
     }
 
     // Добавление юнита в выбранный контейнер
     function addUnit(count) {
-      if (!selectedUnit || !selectedEnchantment) {
-        alert('Ошибка: Юнит или зачарование не выбраны');
+      if (!selectedUnit) {
+        alert('Ошибка: Юнит не выбран');
         return;
       }
 
       const unitData = units[selectedUnit];
       let enchantmentCost = 0;
 
-      // Если зачарование Springlock или Vengeance, берем стоимость из данных юнита
-      if (selectedEnchantment === "Springlock" || selectedEnchantment === "Vengeance") {
-        enchantmentCost = unitData.enchantments[selectedEnchantment] || 0;
-      } else {
-        // Для остальных зачарований берем общую стоимость
-        enchantmentCost = enchantmentCosts[selectedEnchantment] || 0;
+      // Если зачарование выбрано, берем его стоимость
+      if (selectedEnchantment && selectedEnchantment !== "None") {
+        if (selectedEnchantment === "Springlock" || selectedEnchantment === "Vengeance") {
+          enchantmentCost = unitData.enchantments[selectedEnchantment] || 0;
+        } else {
+          // Для остальных зачарований берем общую стоимость
+          enchantmentCost = enchantmentCosts[selectedEnchantment] || 0;
+        }
       }
 
       const unitCost = unitData.price + enchantmentCost;
@@ -1649,10 +2935,10 @@
         const newUnit = document.createElement('div');
         newUnit.className = `unit ${unitData.rarity.toLowerCase()}`;
         newUnit.setAttribute("data-unit-name", selectedUnit);
-        newUnit.setAttribute("data-enchantment", selectedEnchantment);
+        newUnit.setAttribute("data-enchantment", selectedEnchantment || 'None'); // Если зачарование не выбрано, ставим 'None'
         newUnit.innerHTML = `
           <img src="${unitData.img}" alt="${selectedUnit}" />
-          <div class="enchantment-label">${selectedEnchantment}</div>
+          ${selectedEnchantment ? `<div class="enchantment-label">${selectedEnchantment}</div>` : ''}
           <div class="unit-count">${count}</div>`;
         newUnit.onclick = function() {
           removeUnit(newUnit, unitCost); // Передаем стоимость одного юнита
