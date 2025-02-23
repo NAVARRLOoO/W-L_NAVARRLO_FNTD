@@ -3338,31 +3338,124 @@ function removeUnit(unitElement, unitCost) {
 </html>
 
 <head>
+  <!-- Import the functions you need from the SDKs you need -->
   <script type="module">
-  // Подключаем Firebase
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDwP2ccHskBY-2SmzQMUoufkzNL50HC1jc",
+      authDomain: "sitefntd.firebaseapp.com",
+      databaseURL: "https://sitefntd-default-rtdb.firebaseio.com",
+      projectId: "sitefntd",
+      storageBucket: "sitefntd.firebasestorage.app",
+      messagingSenderId: "689326018056",
+      appId: "1:689326018056:web:5729639ca474ac484acbbd",
+      measurementId: "G-EN0633KMBG"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+</head>
+<!-- Кнопка входа в режим админа -->
+<button onclick="loginAsAdmin()" style="position: fixed; top: 10px; right: 10px; z-index: 999; background: red; color: white; border: none; padding: 10px; cursor: pointer;">Войти как админ</button>
+
+<!-- Модальное окно редактирования цены -->
+<div id="editPriceModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: black; color: white; padding: 20px; border: 2px solid white; z-index: 1000;">
+    <h3>Изменить цену</h3>
+    <input type="number" id="newPriceInput" placeholder="Новая цена">
+    <button onclick="saveNewPrice()">Сохранить</button>
+    <button onclick="closeEditModal()">Отмена</button>
+</div>
+
+<script type="module">
   import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  // ⚡ ВСТАВЬ СВОИ ДАННЫЕ из Firebase Console
-  const firebaseConfig = {
-    apiKey: "ТВОЙ_API_KEY",
-    authDomain: "ТВОЙ_AUTH_DOMAIN",
-    databaseURL: "ТВОЙ_DATABASE_URL",
-    projectId: "ТВОЙ_PROJECT_ID",
-    storageBucket: "ТВОЙ_STORAGE_BUCKET",
-    messagingSenderId: "ТВОЙ_MESSAGING_SENDER_ID",
-    appId: "ТВОЙ_APP_ID"
-  };
+  const db = getDatabase();
+  let isAdmin = false;
+  let currentEditingUnit = null;
 
-  // Инициализация Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+  // Войти в админ-режим
+  function loginAsAdmin() {
+      let password = prompt("Введите пароль администратора:");
+      if (password === "NAVARRLOFNTD") { // Замени на свой пароль
+          isAdmin = true;
+          document.body.classList.add("admin-mode");
+          alert("Вы вошли как администратор!");
+          showEditButtons();
+      } else {
+          alert("Неверный пароль!");
+      }
+  }
 
-  // Передаем в глобальный объект для использования в других скриптах
-  window.firebaseDB = db;
-  window.firebaseRef = ref;
-  window.firebaseGet = get;
-  window.firebaseSet = set;
-  window.firebaseUpdate = update;
+  // Показываем кнопки редактирования
+  function showEditButtons() {
+      document.querySelectorAll('.unit').forEach(unit => {
+          let unitName = unit.getAttribute("data-name");
+          let editBtn = document.createElement("button");
+          editBtn.innerText = "✎";
+          editBtn.style.position = "absolute";
+          editBtn.style.top = "5px";
+          editBtn.style.right = "5px";
+          editBtn.style.background = "red";
+          editBtn.style.color = "white";
+          editBtn.style.border = "none";
+          editBtn.style.cursor = "pointer";
+          editBtn.onclick = (event) => {
+              event.stopPropagation();
+              editUnitPrice(unitName);
+          };
+          unit.appendChild(editBtn);
+      });
+  }
+
+  // Открыть окно редактирования цены
+  function editUnitPrice(unitName) {
+      if (!isAdmin) return;
+      currentEditingUnit = unitName;
+      document.getElementById("editPriceModal").style.display = "block";
+  }
+
+  // Сохранение новой цены в Firebase
+  function saveNewPrice() {
+      let newPrice = document.getElementById("newPriceInput").value;
+      if (currentEditingUnit && newPrice) {
+          update(ref(db, "units/" + currentEditingUnit), { price: parseInt(newPrice) }).then(() => {
+              document.getElementById("editPriceModal").style.display = "none";
+              alert(`Цена для ${currentEditingUnit} изменена на $${newPrice}`);
+              updateUnitPrices();
+          }).catch(error => {
+              console.error("Ошибка обновления цены:", error);
+          });
+      }
+  }
+
+  // Закрытие модального окна
+  function closeEditModal() {
+      document.getElementById("editPriceModal").style.display = "none";
+  }
+
+  // Загрузка цен из Firebase
+  function updateUnitPrices() {
+      get(ref(db, "units")).then(snapshot => {
+          if (snapshot.exists()) {
+              let unitsData = snapshot.val();
+              document.querySelectorAll('.unit').forEach(unit => {
+                  let unitName = unit.getAttribute("data-name");
+                  if (unitsData[unitName]) {
+                      unit.querySelector('span').innerText = `${unitName} - $${unitsData[unitName].price}`;
+                  }
+              });
+          }
+      }).catch(error => {
+          console.error("Ошибка загрузки данных:", error);
+      });
+  }
+
+  // Автоматически загружать данные при загрузке страницы
+  window.onload = updateUnitPrices;
 </script>
-<head>
+
