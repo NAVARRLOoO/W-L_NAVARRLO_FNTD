@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3237,6 +3238,18 @@ function removeUnit(unitElement, unitCost) {
 </html>
 
 
+
+
+
+
+
+
+
+
+
+
+
+<a href="https://ibb.co/hRgkRRHY"><img src="https://i.ibb.co/d0fS006m/2025-03-13-2-02-40-PM.png" alt="2025-03-13-2-02-40-PM" border="0"></a>
 <head>
   <!-- Import the functions you need from the SDKs you need -->
   <script type="module">
@@ -3260,3 +3273,244 @@ function removeUnit(unitElement, unitCost) {
     const analytics = getAnalytics(app);
   </script>
 </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button with Dropdown</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Контейнер для полосы с белой обводкой */
+        .fixed-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px; /* Увеличиваем высоту полосы */
+            background-color: black;
+            border-bottom: 5px solid white; /* Белая обводка полосы */
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Размещаем элементы с двух сторон */
+            padding: 0 20px; /* Отступы по бокам */
+            z-index: 1000;
+        }
+
+        /* Стили для картинки слева */
+        .image {
+            width: 80px; /* Увеличиваем ширину изображения */
+            height: 100%; /* Высота остается как высота полосы */
+            object-fit: cover; /* Обрезаем изображение, если оно выходит за пределы */
+        }
+
+        /* Стили для текста "FIVE NIGHT TD" */
+        .text {
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px; /* Уменьшаем размер текста */
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-left: -5px; /* Убираем отступ, чтобы текст был практически на границе картинки */
+            position: relative; /* Чтобы текст был поверх картинки */
+        }
+
+        /* Стили для кнопки */
+        .button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 36px; /* Увеличиваем шрифт */
+            font-family: 'Orbitron', sans-serif; /* Красивый футуристичный шрифт */
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            cursor: pointer;
+            position: relative;
+            z-index: 2; /* Чтобы кнопка была поверх картинки */
+            text-shadow: 0 0 5px white, 0 0 10px white, 0 0 20px white; /* Белая обводка текста */
+            transition: transform 0.3s ease, font-size 0.3s ease; /* Плавный переход */
+        }
+
+        .button:hover {
+            color: lightblue; /* Цвет при наведении */
+            text-shadow: 0 0 5px cyan, 0 0 10px cyan, 0 0 20px cyan; /* Эффект при наведении */
+            transform: translateY(5px) scale(1.2); /* Наклоняем вниз и увеличиваем размер */
+        }
+
+        /* Контейнер для выпадающего меню */
+        .dropdown {
+            position: relative;
+        }
+
+        /* Стили для скрытого меню */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 60px; /* Размещаем под полосой */
+            right: 0; /* Меню выезжает справа */
+            background-color: black;
+            border: 1px solid white;
+            min-width: 200px;
+            padding: 10px;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Плавное изменение прозрачности */
+        }
+
+        /* Стили для элементов в меню */
+        .dropdown-content p {
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            margin: 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        /* Эффект при наведении на элемент меню */
+        .dropdown-content p:hover {
+            color: lightblue;
+        }
+
+        /* Показать меню при наведении на кнопку */
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1; /* Меню становится видимым */
+            visibility: visible;
+        }
+
+        /* Задержка скрытия меню после того, как курсор уходит */
+        .dropdown-content {
+            visibility: hidden;
+            opacity: 0;
+            transition-delay: 0.5s; /* Задержка исчезновения на полсекунды */
+        }
+
+        /* Контент страницы */
+        .content {
+            margin-top: 100px; /* Отступ для контента, чтобы кнопка не закрывала текст */
+            height: 2000px;
+            background-color: black;
+        }
+
+        /* Адаптация для мобильных устройств */
+        @media (max-width: 768px) {
+            .fixed-bar {
+                height: 50px; /* Уменьшаем высоту полосы */
+                padding: 0 10px; /* Уменьшаем отступы */
+            }
+
+            .image {
+                width: 60px; /* Уменьшаем ширину изображения */
+            }
+
+            .text {
+                font-size: 16px; /* Уменьшаем размер текста */
+                letter-spacing: 2px;
+            }
+
+            .button {
+                font-size: 24px; /* Уменьшаем размер шрифта кнопки */
+                letter-spacing: 3px;
+            }
+
+            .dropdown-content {
+                top: 50px; /* Размещаем меню ниже */
+                right: 0; /* Меню выезжает справа */
+                min-width: 150px; /* Уменьшаем ширину меню */
+            }
+
+            .dropdown-content p {
+                font-size: 14px; /* Уменьшаем размер шрифта элементов меню */
+            }
+        }
+    </style>
+
+    <!-- Подключение шрифта Orbitron для футуристичного стиля -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Полоса с картинкой, текстом и кнопкой -->
+    <div class="fixed-bar">
+        <!-- Картинка слева -->
+        <img src="https://i.ytimg.com/vi/bl8JTnyLDgg/hqdefault.jpg" alt="FNTD" class="image">
+        <!-- Текст "FIVE NIGHT TD" -->
+        <div class="text">FIVE NIGHT TD</div>
+        <!-- Кнопка "Units" с выпадающим меню -->
+        <div class="dropdown">
+            <button class="button">Units</button>
+            <div class="dropdown-content">
+                <p>EVOLUTIONS</p>
+                <p>APEX</p>
+                <p>ARG/DEV UNITS</p>
+                <p>FORGOTTEN</p>
+                <p>NIGHTMARES</p>
+                <p>SECRETS</p>
+                <p>MYTHIC AND +</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Контент страницы -->
+    </div>
+
+    <script>
+        // Селектор для кнопки и выпадающего меню
+        const dropdownButton = document.querySelector('.button');
+        const dropdownContent = document.querySelector('.dropdown-content');
+        let isMenuOpen = false; // Флаг для отслеживания состояния меню
+
+        // Добавление события на клик по кнопке
+        dropdownButton.addEventListener('click', function() {
+            // Переключаем флаг состояния меню
+            isMenuOpen = !isMenuOpen;
+
+            if (isMenuOpen) {
+                dropdownContent.style.display = 'block';
+                dropdownContent.style.opacity = '1';
+                dropdownContent.style.visibility = 'visible';
+            } else {
+                dropdownContent.style.opacity = '0';
+                dropdownContent.style.visibility = 'hidden';
+                setTimeout(function() {
+                    dropdownContent.style.display = 'none';
+                }, 300); // Задержка скрытия меню
+            }
+        });
+
+        // Событие для наведения на кнопку
+        dropdownButton.addEventListener('mouseenter', function() {
+            if (!isMenuOpen) {
+                dropdownContent.style.display = 'block';
+                dropdownContent.style.opacity = '1';
+                dropdownContent.style.visibility = 'visible';
+            }
+        });
+
+        // Событие для выхода с кнопки
+        dropdownButton.addEventListener('mouseleave', function() {
+            if (!isMenuOpen) {
+                setTimeout(function() {
+                    dropdownContent.style.display = 'none';
+                    dropdownContent.style.opacity = '0';
+                    dropdownContent.style.visibility = 'hidden';
+                }, 500); // Задержка скрытия меню
+            }
+        });
+    </script>
+
+</body>
+</html>
